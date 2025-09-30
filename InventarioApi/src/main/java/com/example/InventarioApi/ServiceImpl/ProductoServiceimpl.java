@@ -11,8 +11,7 @@ import com.example.InventarioApi.Repositoriy.ProductoRepository;
 import com.example.InventarioApi.Service.ProductoService;
 
 @Service
-public class ProductoServiceimpl implements ProductoService {
-
+public class ProductoServiceImpl implements ProductoService {
     @Autowired
     private ProductoRepository productoRepository;
 
