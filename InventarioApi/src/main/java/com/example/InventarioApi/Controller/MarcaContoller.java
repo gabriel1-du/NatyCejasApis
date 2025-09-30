@@ -25,24 +25,24 @@ public class MarcaContoller {
     @Autowired
     MarcaServiceImpl marcaService;
 
-    @GetMapping
+    @GetMapping //Buscar todo
     public List<Marca> listarMarcas() {
         return marcaService.listarMarcas();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") //Buscar por ID
     public ResponseEntity<Marca> obtenerMarca(@PathVariable Integer id) {
         return marcaService.obtenerMarcaPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
+    @PostMapping //Crear
     public Marca crearMarca(@RequestBody Marca marca) {
         return marcaService.guardarMarca(marca);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") //Buscar por ID
     public ResponseEntity<Void> eliminarMarca(@PathVariable Integer id) {
         marcaService.eliminarMarca(id);
         return ResponseEntity.noContent().build();
