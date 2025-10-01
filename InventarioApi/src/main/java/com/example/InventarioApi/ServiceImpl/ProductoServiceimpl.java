@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.example.InventarioApi.DTO.CreateProductoDTO;
 import com.example.InventarioApi.DTO.MapperProducto;
 import com.example.InventarioApi.DTO.ProductoDTO;
+import com.example.InventarioApi.DTO.UpdateProductoDTO;
 import com.example.InventarioApi.Model.CategoriaProducto;
 import com.example.InventarioApi.Model.Marca;
 import com.example.InventarioApi.Model.Producto;
@@ -52,6 +53,7 @@ public class ProductoServiceImpl implements ProductoService {
         productoRepository.deleteById(id);
     }
 
+
     public ProductoDTO crearProducto(CreateProductoDTO createDTO) {
         // Buscar Marca
         Marca marca = marcaRepositorio.findById(createDTO.getId_marca())
@@ -73,6 +75,26 @@ public class ProductoServiceImpl implements ProductoService {
         // Guardar y mapear a DTO
         Producto productoGuardado = productoRepository.save(producto);
         return MapperProducto.toDTO(productoGuardado);
+    }
+
+
+    public ProductoDTO actualizarProducto(Integer id, UpdateProductoDTO updateDTO) {
+        // Buscar producto en BD
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));
+
+        // Settear los datos actualizables
+        producto.setNombre_producto(updateDTO.getNombre_producto());
+        producto.setDescripcion(updateDTO.getDescripcion());
+        producto.setPrecio(updateDTO.getPrecio());
+        producto.setStock(updateDTO.getStock());
+        // Marca y Categoria se mantienen iguales
+
+        // Guardar cambios
+        Producto actualizado = productoRepository.save(producto);
+
+        // Retornar DTO
+        return MapperProducto.toDTO(actualizado);
     }
 
 

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.InventarioApi.DTO.CreateProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTO;
+import com.example.InventarioApi.DTO.UpdateProductoDTO;
 import com.example.InventarioApi.Model.Producto;
 import com.example.InventarioApi.ServiceImpl.ProductoServiceImpl;
 
@@ -47,14 +48,8 @@ public class ProductoController {
     }
 
     @PutMapping("/{id}") //Actulizar
-    public ResponseEntity<Producto> actualizarProducto(@PathVariable Integer id, @RequestBody Producto producto) {
-        ProductoDTO productoDTO = productoService.obtenerProductoPorId(id);
-        if (productoDTO != null) {
-            producto.setId_producto(id);
-            return ResponseEntity.ok(productoService.guardarProducto(producto));
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public ProductoDTO updateProducto(@PathVariable Integer id, @RequestBody UpdateProductoDTO updateDTO) {
+        return productoService.actualizarProducto(id, updateDTO);
     }
 
     @PatchMapping("/{id}/sumar")

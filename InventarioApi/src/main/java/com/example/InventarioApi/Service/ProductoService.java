@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.InventarioApi.DTO.CreateProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTO;
+import com.example.InventarioApi.DTO.UpdateProductoDTO;
 import com.example.InventarioApi.Model.Producto;
 
 public interface ProductoService {
@@ -13,6 +14,8 @@ public interface ProductoService {
     ProductoDTO obtenerProductoPorId(Integer id);
 
     ProductoDTO crearProducto(CreateProductoDTO createProductoDTO);
+
+    ProductoDTO actualizarProducto(Integer id, UpdateProductoDTO updateDTO);
 
     void eliminarProducto(Integer id);
 
