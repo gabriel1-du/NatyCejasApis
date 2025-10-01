@@ -3,6 +3,8 @@ package com.example.InventarioApi.Service;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.InventarioApi.DTO.CreateProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTO;
 import com.example.InventarioApi.Model.Producto;
 
 public interface ProductoService {
@@ -11,7 +13,7 @@ public interface ProductoService {
 
     Optional<Producto> obtenerProductoPorId(Integer id);
 
-    Producto guardarProducto(Producto producto);
+    ProductoDTO crearProducto(CreateProductoDTO createProductoDTO);
 
     void eliminarProducto(Integer id);
 

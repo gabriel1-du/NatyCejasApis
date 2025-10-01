@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.InventarioApi.DTO.CreateProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTO;
 import com.example.InventarioApi.Model.Producto;
 import com.example.InventarioApi.ServiceImpl.ProductoServiceImpl;
 
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/inventario/productos")
@@ -42,9 +43,9 @@ public class ProductoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping //Crear
-    public Producto crearProducto(@RequestBody Producto producto) {
-        return productoService.guardarProducto(producto);
+    @PostMapping
+    public ProductoDTO crearProducto(@RequestBody CreateProductoDTO createProductoDTO) {
+        return productoService.crearProducto(createProductoDTO);
     }
 
     @PutMapping("/{id}") //Actulizar
