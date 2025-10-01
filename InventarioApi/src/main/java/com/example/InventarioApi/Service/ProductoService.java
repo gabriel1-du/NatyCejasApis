@@ -1,7 +1,6 @@
 package com.example.InventarioApi.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.example.InventarioApi.DTO.CreateProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTO;

@@ -6,12 +6,15 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.example.InventarioApi.DTO.CreateProductoDTO;
 import com.example.InventarioApi.DTO.MapperProducto;
 import com.example.InventarioApi.DTO.ProductoDTO;
+import com.example.InventarioApi.Model.CategoriaProducto;
+import com.example.InventarioApi.Model.Marca;
 import com.example.InventarioApi.Model.Producto;
+import com.example.InventarioApi.Repositoriy.CategoriaProductoRepository;
+import com.example.InventarioApi.Repositoriy.MarcaRepository;
 import com.example.InventarioApi.Repositoriy.ProductoRepository;
 import com.example.InventarioApi.Service.ProductoService;
 
@@ -20,6 +23,13 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Autowired
     private ProductoRepository productoRepository;
+
+    @Autowired
+    private MarcaRepository marcaRepositorio;
+
+    @Autowired
+    private CategoriaProductoRepository categoriaProductoRepositorio;
+
 
     
     public List<ProductoDTO>  obtenerTodosLosProductos() {
@@ -42,11 +52,29 @@ public class ProductoServiceImpl implements ProductoService {
         productoRepository.deleteById(id);
     }
 
-    public ProductoDTO crearProducto(CreateProductoDTO createProductoDTO) {
-        Producto producto = MapperProducto.toEntity(createProductoDTO);
+    public ProductoDTO crearProducto(CreateProductoDTO createDTO) {
+        // Buscar Marca
+        Marca marca = marcaRepositorio.findById(createDTO.getId_marca())
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada con id: " + createDTO.getId_marca()));
+
+        // Buscar Categoría
+        CategoriaProducto categoria = categoriaProductoRepositorio.findById(createDTO.getId_categoria())
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada con id: " + createDTO.getId_categoria()));
+
+        // Crear el Producto desde el DTO
+        Producto producto = new Producto();
+        producto.setNombre_producto(createDTO.getNombre_producto());
+        producto.setDescripcion(createDTO.getDescripcion());
+        producto.setPrecio(createDTO.getPrecio());
+        producto.setStock(createDTO.getStock());
+        producto.setMarca(marca);
+        producto.setCategoria(categoria);
+
+        // Guardar y mapear a DTO
         Producto productoGuardado = productoRepository.save(producto);
         return MapperProducto.toDTO(productoGuardado);
     }
+
 
     public Producto sumarStock(Integer id, Integer cantidad) {
         Producto producto = productoRepository.findById(id)
