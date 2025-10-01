@@ -2,6 +2,7 @@ package com.example.InventarioApi.ServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,19 +17,25 @@ import com.example.InventarioApi.Service.ProductoService;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
+
     @Autowired
     private ProductoRepository productoRepository;
 
-    public List<Producto> listarProductos() {
-        return productoRepository.findAll();
+    
+    public List<ProductoDTO>  obtenerTodosLosProductos() {
+        List<Producto> productos = productoRepository.findAll();
+        return productos.stream()
+                .map(MapperProducto::toDTO) // usamos el mapper que me pasaste
+                .collect(Collectors.toList());
     }
 
     public Producto guardarProducto(Producto producto) {
         return productoRepository.save(producto);
     }
 
-    public Optional<Producto> obtenerProductoPorId(Integer id) {
-        return productoRepository.findById(id);
+    public ProductoDTO obtenerProductoPorId(Integer id) {
+        Optional<Producto> producto = productoRepository.findById(id);
+        return producto.map(MapperProducto::toDTO).orElse(null);
     }
 
     public void eliminarProducto(Integer id) {

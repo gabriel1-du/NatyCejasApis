@@ -32,15 +32,13 @@ public class ProductoController {
     //---Metodos crud---//
 
     @GetMapping //Obtener Todos
-    public List<Producto> listarProductos() {
-        return productoService.listarProductos();
+    public List<ProductoDTO> obtenerTodosLosProductosController() {
+        return productoService.obtenerTodosLosProductos();
     }
 
-    @GetMapping("/{id}") //Ovtener Por ID
-    public ResponseEntity<Producto> obtenerProducto(@PathVariable Integer id) {
-        return productoService.obtenerProductoPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{id}")
+    public ProductoDTO obtenerProductoPorIdController(@PathVariable Integer id) {
+        return productoService.obtenerProductoPorId(id);
     }
 
     @PostMapping
@@ -50,12 +48,13 @@ public class ProductoController {
 
     @PutMapping("/{id}") //Actulizar
     public ResponseEntity<Producto> actualizarProducto(@PathVariable Integer id, @RequestBody Producto producto) {
-        return productoService.obtenerProductoPorId(id)
-                .map(p -> {
-                    producto.setId_producto(id);
-                    return ResponseEntity.ok(productoService.guardarProducto(producto));
-                })
-                .orElse(ResponseEntity.notFound().build());
+        ProductoDTO productoDTO = productoService.obtenerProductoPorId(id);
+        if (productoDTO != null) {
+            producto.setId_producto(id);
+            return ResponseEntity.ok(productoService.guardarProducto(producto));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PatchMapping("/{id}/sumar")

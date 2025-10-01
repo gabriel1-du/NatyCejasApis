@@ -18,6 +18,7 @@ public class CategoriaProducto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Integer id_categoria_producto;
 
     @Column(name = "nombre_categoria_producto", nullable = false)

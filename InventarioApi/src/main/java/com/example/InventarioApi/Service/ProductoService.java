@@ -9,9 +9,9 @@ import com.example.InventarioApi.Model.Producto;
 
 public interface ProductoService {
 
-    List<Producto> listarProductos();
+    List<ProductoDTO> obtenerTodosLosProductos();
 
-    Optional<Producto> obtenerProductoPorId(Integer id);
+    ProductoDTO obtenerProductoPorId(Integer id);
 
     ProductoDTO crearProducto(CreateProductoDTO createProductoDTO);
 
