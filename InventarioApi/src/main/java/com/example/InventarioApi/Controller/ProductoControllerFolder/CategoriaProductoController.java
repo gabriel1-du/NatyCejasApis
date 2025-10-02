@@ -1,4 +1,4 @@
-package com.example.InventarioApi.Controller;
+package com.example.InventarioApi.Controller.ProductoControllerFolder;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.InventarioApi.Model.ProductoModels.CategoriaProducto;
-import com.example.InventarioApi.Service.ProductoServices.CategoriaProductoService;
+import com.example.InventarioApi.Model.ProductoModelsFolder.CategoriaProducto;
+import com.example.InventarioApi.Service.ProductoServicesFolder.CategoriaProductoService;
 
 @RestController
 @RequestMapping("/inventario/categorias")

@@ -13,8 +13,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
-import com.example.InventarioApi.Model.ProductoModels.Producto;
-import com.example.InventarioApi.Repository.ProductoRepositories.ProductoRepository;
+import com.example.InventarioApi.Model.ProductoModelsFolder.Producto;
+import com.example.InventarioApi.Repository.ProductoRepositoriesFolder.ProductoRepository;
 import com.example.InventarioApi.ServiceImpl.ProductoServiceImplFolder.ProductoServiceImpl;
 
 public class ProductServiceImplTest {

@@ -6,9 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.InventarioApi.Model.ProductoModels.CategoriaProducto;
-import com.example.InventarioApi.Repository.ProductoRepositories.CategoriaProductoRepository;
-import com.example.InventarioApi.Service.ProductoServices.CategoriaProductoService;
+import com.example.InventarioApi.Model.ProductoModelsFolder.CategoriaProducto;
+import com.example.InventarioApi.Repository.ProductoRepositoriesFolder.CategoriaProductoRepository;
+import com.example.InventarioApi.Service.ProductoServicesFolder.CategoriaProductoService;
 
 
 @Service

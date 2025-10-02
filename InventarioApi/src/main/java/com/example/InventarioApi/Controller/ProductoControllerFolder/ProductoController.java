@@ -1,4 +1,4 @@
-package com.example.InventarioApi.Controller;
+package com.example.InventarioApi.Controller.ProductoControllerFolder;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.UpdateProductoDTO;
-import com.example.InventarioApi.Model.ProductoModels.Producto;
+import com.example.InventarioApi.Model.ProductoModelsFolder.Producto;
 import com.example.InventarioApi.ServiceImpl.ProductoServiceImplFolder.ProductoServiceImpl;
 
 

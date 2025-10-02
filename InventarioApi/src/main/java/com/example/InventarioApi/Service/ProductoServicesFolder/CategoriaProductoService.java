@@ -1,9 +1,9 @@
-package com.example.InventarioApi.Service.ProductoServices;
+package com.example.InventarioApi.Service.ProductoServicesFolder;
 
 import java.util.List;
 import java.util.Optional;
 
-import com.example.InventarioApi.Model.ProductoModels.CategoriaProducto;
+import com.example.InventarioApi.Model.ProductoModelsFolder.CategoriaProducto;
 
 public interface CategoriaProductoService {
     

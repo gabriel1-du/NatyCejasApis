@@ -12,12 +12,12 @@ import com.example.InventarioApi.DTO.ProductoDTOs.MapperProducto;
 import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.UpdateProductoDTO;
 import com.example.InventarioApi.Model.Marca;
-import com.example.InventarioApi.Model.ProductoModels.CategoriaProducto;
-import com.example.InventarioApi.Model.ProductoModels.Producto;
+import com.example.InventarioApi.Model.ProductoModelsFolder.CategoriaProducto;
+import com.example.InventarioApi.Model.ProductoModelsFolder.Producto;
 import com.example.InventarioApi.Repository.MarcaRepository;
-import com.example.InventarioApi.Repository.ProductoRepositories.CategoriaProductoRepository;
-import com.example.InventarioApi.Repository.ProductoRepositories.ProductoRepository;
-import com.example.InventarioApi.Service.ProductoServices.ProductoService;
+import com.example.InventarioApi.Repository.ProductoRepositoriesFolder.CategoriaProductoRepository;
+import com.example.InventarioApi.Repository.ProductoRepositoriesFolder.ProductoRepository;
+import com.example.InventarioApi.Service.ProductoServicesFolder.ProductoService;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {

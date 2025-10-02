@@ -1,4 +1,4 @@
-package com.example.InventarioApi.Model.ServiciosModels;
+package com.example.InventarioApi.Model.ServiciosModelsFolder;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,10 +8,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "categoria_servicio")
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class CategoriaServicio {
 

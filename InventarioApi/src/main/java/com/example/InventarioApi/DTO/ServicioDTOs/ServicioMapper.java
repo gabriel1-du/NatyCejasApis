@@ -1,6 +1,6 @@
 package com.example.InventarioApi.DTO.ServicioDTOs;
 
-import com.example.InventarioApi.Model.ServiciosModels.Servicio;
+import com.example.InventarioApi.Model.ServiciosModelsFolder.Servicio;
 
 public class ServicioMapper {
 

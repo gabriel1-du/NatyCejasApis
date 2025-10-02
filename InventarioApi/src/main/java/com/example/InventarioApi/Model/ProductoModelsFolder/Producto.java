@@ -1,4 +1,4 @@
-package com.example.InventarioApi.Model.ProductoModels;
+package com.example.InventarioApi.Model.ProductoModelsFolder;
 
 import com.example.InventarioApi.Model.Marca;
 

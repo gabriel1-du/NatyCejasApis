@@ -13,6 +13,6 @@ public class CreateServicioDTO {
     private String nombre_servicio;
     private String descripcion;
     private String precio;
-    private Integer id_categoria_service;
+    private Integer id_categoria_servicio;
     
 }
