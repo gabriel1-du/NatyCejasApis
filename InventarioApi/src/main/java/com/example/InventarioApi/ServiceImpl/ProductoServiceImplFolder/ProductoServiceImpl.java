@@ -1,4 +1,4 @@
-package com.example.InventarioApi.ServiceImpl;
+package com.example.InventarioApi.ServiceImpl.ProductoServiceImplFolder;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,17 +7,17 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.InventarioApi.DTO.CreateProductoDTO;
-import com.example.InventarioApi.DTO.MapperProducto;
-import com.example.InventarioApi.DTO.ProductoDTO;
-import com.example.InventarioApi.DTO.UpdateProductoDTO;
-import com.example.InventarioApi.Model.CategoriaProducto;
+import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTOs.MapperProducto;
+import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTOs.UpdateProductoDTO;
 import com.example.InventarioApi.Model.Marca;
-import com.example.InventarioApi.Model.Producto;
-import com.example.InventarioApi.Repositoriy.CategoriaProductoRepository;
-import com.example.InventarioApi.Repositoriy.MarcaRepository;
-import com.example.InventarioApi.Repositoriy.ProductoRepository;
-import com.example.InventarioApi.Service.ProductoService;
+import com.example.InventarioApi.Model.ProductoModels.CategoriaProducto;
+import com.example.InventarioApi.Model.ProductoModels.Producto;
+import com.example.InventarioApi.Repository.MarcaRepository;
+import com.example.InventarioApi.Repository.ProductoRepositories.CategoriaProductoRepository;
+import com.example.InventarioApi.Repository.ProductoRepositories.ProductoRepository;
+import com.example.InventarioApi.Service.ProductoServices.ProductoService;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {

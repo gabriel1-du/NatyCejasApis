@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.InventarioApi.DTO.CreateProductoDTO;
-import com.example.InventarioApi.DTO.ProductoDTO;
-import com.example.InventarioApi.DTO.UpdateProductoDTO;
-import com.example.InventarioApi.Model.Producto;
-import com.example.InventarioApi.ServiceImpl.ProductoServiceImpl;
+import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTOs.UpdateProductoDTO;
+import com.example.InventarioApi.Model.ProductoModels.Producto;
+import com.example.InventarioApi.ServiceImpl.ProductoServiceImplFolder.ProductoServiceImpl;
 
 
 @RestController

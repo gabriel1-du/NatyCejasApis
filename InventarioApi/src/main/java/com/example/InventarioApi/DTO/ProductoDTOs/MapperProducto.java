@@ -1,8 +1,8 @@
-package com.example.InventarioApi.DTO;
+package com.example.InventarioApi.DTO.ProductoDTOs;
 
-import com.example.InventarioApi.Model.CategoriaProducto;
 import com.example.InventarioApi.Model.Marca;
-import com.example.InventarioApi.Model.Producto;
+import com.example.InventarioApi.Model.ProductoModels.CategoriaProducto;
+import com.example.InventarioApi.Model.ProductoModels.Producto;
 
 public class MapperProducto {
 

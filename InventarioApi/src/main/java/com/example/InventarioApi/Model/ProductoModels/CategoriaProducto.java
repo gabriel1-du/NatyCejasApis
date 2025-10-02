@@ -1,4 +1,4 @@
-package com.example.InventarioApi.Model;
+package com.example.InventarioApi.Model.ProductoModels;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

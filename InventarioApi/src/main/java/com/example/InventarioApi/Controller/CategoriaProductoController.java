@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.InventarioApi.Model.CategoriaProducto;
-import com.example.InventarioApi.Service.CategoriaProductoService;
+import com.example.InventarioApi.Model.ProductoModels.CategoriaProducto;
+import com.example.InventarioApi.Service.ProductoServices.CategoriaProductoService;
 
 @RestController
 @RequestMapping("/inventario/categorias")

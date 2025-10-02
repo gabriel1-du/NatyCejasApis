@@ -7,10 +7,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 @Entity
 @Table(name = "categoria_servicio")
 @AllArgsConstructor
+@Data
 public class CategoriaServicio {
 
     @Id

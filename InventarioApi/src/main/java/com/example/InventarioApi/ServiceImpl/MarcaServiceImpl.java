@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.InventarioApi.Model.Marca;
-import com.example.InventarioApi.Repositoriy.MarcaRepository;
+import com.example.InventarioApi.Repository.MarcaRepository;
 import com.example.InventarioApi.Service.MarcaService;
 
 @Service

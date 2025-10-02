@@ -1,4 +1,4 @@
-package com.example.InventarioApi.DTO;
+package com.example.InventarioApi.DTO.ProductoDTOs;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

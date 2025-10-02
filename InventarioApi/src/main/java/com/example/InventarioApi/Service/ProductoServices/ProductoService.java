@@ -1,11 +1,11 @@
-package com.example.InventarioApi.Service;
+package com.example.InventarioApi.Service.ProductoServices;
 
 import java.util.List;
 
-import com.example.InventarioApi.DTO.CreateProductoDTO;
-import com.example.InventarioApi.DTO.ProductoDTO;
-import com.example.InventarioApi.DTO.UpdateProductoDTO;
-import com.example.InventarioApi.Model.Producto;
+import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTOs.UpdateProductoDTO;
+import com.example.InventarioApi.Model.ProductoModels.Producto;
 
 public interface ProductoService {
 
