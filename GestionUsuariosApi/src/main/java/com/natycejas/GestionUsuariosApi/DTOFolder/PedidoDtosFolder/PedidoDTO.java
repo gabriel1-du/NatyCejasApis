@@ -12,7 +12,7 @@ import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoDtosFolder.CarritoDTO;
 @AllArgsConstructor
 public class PedidoDTO {
     private Integer idPedido;
-    private CarritoDTO carrito;
+    private CarritoDTO carrito; //Colaboracion con carrito DTO
     private LocalDateTime fecha;
     private Integer total;
     private String estado;
