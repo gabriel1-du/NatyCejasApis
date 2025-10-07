@@ -18,43 +18,112 @@ import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.Carr
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoUpdateDTO;
 import com.natycejas.GestionUsuariosApi.Service.CarritoProductoService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/carrito-producto")
+@Tag(name = "Carrito Producto", description = "API para la gestión de productos dentro de los carritos de compras. Permite agregar, consultar, actualizar y eliminar productos de los carritos.")
 public class CarritoProductoController {
 
      @Autowired
     private CarritoProductoService carritoProductoService;
 
-    // Listar todos los productos del carrito
+    @Operation(
+        summary = "Listar todos los productos del carrito",
+        description = "Obtiene una lista completa de todos los productos agregados a los carritos en el sistema."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de productos del carrito obtenida exitosamente",
+                    content = @Content(mediaType = "application/json", 
+                                     schema = @Schema(implementation = CarritoProductoDTO.class)))
+    })
     @GetMapping
     public ResponseEntity<List<CarritoProductoDTO>> listarTodosController() {
         return ResponseEntity.ok(carritoProductoService.listarTodos());
     }
 
-    // Buscar producto del carrito por ID
+    @Operation(
+        summary = "Buscar producto del carrito por ID",
+        description = "Recupera la información completa de un producto específico dentro de un carrito mediante su ID único."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Producto del carrito encontrado exitosamente",
+                    content = @Content(mediaType = "application/json", 
+                                     schema = @Schema(implementation = CarritoProductoDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Producto del carrito no encontrado",
+                    content = @Content)
+    })
     @GetMapping("/{id}")
-    public ResponseEntity<CarritoProductoDTO> buscarPorIdController(@PathVariable Integer id) {
+    public ResponseEntity<CarritoProductoDTO> buscarPorIdController(
+            @Parameter(description = "ID único del producto en el carrito", required = true, example = "1")
+            @PathVariable Integer id) {
         CarritoProductoDTO dto = carritoProductoService.buscarPorId(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
-    // Crear producto dentro del carrito
+    @Operation(
+        summary = "Agregar producto al carrito",
+        description = "Agrega un nuevo producto a un carrito específico con la cantidad indicada."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Producto agregado al carrito exitosamente",
+                    content = @Content(mediaType = "application/json", 
+                                     schema = @Schema(implementation = CarritoProductoDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos",
+                    content = @Content),
+        @ApiResponse(responseCode = "404", description = "Carrito o producto no encontrado",
+                    content = @Content)
+    })
     @PostMapping
-    public ResponseEntity<CarritoProductoDTO> crearController(@RequestBody CarritoProductoCreateDTO carritoProductoCreateDTO) {
+    public ResponseEntity<CarritoProductoDTO> crearController(
+            @Parameter(description = "Datos del producto a agregar al carrito", required = true)
+            @RequestBody CarritoProductoCreateDTO carritoProductoCreateDTO) {
         CarritoProductoDTO dto = carritoProductoService.crear(carritoProductoCreateDTO);
         return ResponseEntity.ok(dto);
     }
 
-    // Actualizar producto del carrito
+    @Operation(
+        summary = "Actualizar producto del carrito",
+        description = "Actualiza la información de un producto existente en el carrito, como la cantidad."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Producto del carrito actualizado exitosamente",
+                    content = @Content(mediaType = "application/json", 
+                                     schema = @Schema(implementation = CarritoProductoDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Producto del carrito no encontrado",
+                    content = @Content),
+        @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos",
+                    content = @Content)
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<CarritoProductoDTO> actualizarController(@PathVariable Integer id, @RequestBody CarritoProductoUpdateDTO carritoProductoUpdateDTO) {
+    public ResponseEntity<CarritoProductoDTO> actualizarController(
+            @Parameter(description = "ID único del producto en el carrito a actualizar", required = true, example = "1")
+            @PathVariable Integer id, 
+            @Parameter(description = "Datos actualizados del producto en el carrito", required = true)
+            @RequestBody CarritoProductoUpdateDTO carritoProductoUpdateDTO) {
         CarritoProductoDTO dto = carritoProductoService.actualizar(id, carritoProductoUpdateDTO);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
-    // Eliminar producto del carrito
+    @Operation(
+        summary = "Eliminar producto del carrito",
+        description = "Elimina permanentemente un producto específico de un carrito mediante su ID único."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Producto eliminado del carrito exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Producto del carrito no encontrado",
+                    content = @Content)
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarController(@PathVariable Integer id) {
+    public ResponseEntity<Void> eliminarController(
+            @Parameter(description = "ID único del producto en el carrito a eliminar", required = true, example = "1")
+            @PathVariable Integer id) {
         carritoProductoService.eliminar(id);
         return ResponseEntity.noContent().build();
     }
