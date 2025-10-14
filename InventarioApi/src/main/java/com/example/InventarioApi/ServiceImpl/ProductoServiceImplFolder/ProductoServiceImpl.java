@@ -3,6 +3,14 @@ package com.example.InventarioApi.ServiceImpl.ProductoServiceImplFolder;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -71,8 +79,6 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setStock(createDTO.getStock());
         producto.setMarca(marca);
         producto.setCategoria(categoria);
-
-        // Guardar y mapear a DTO
         Producto productoGuardado = productoRepository.save(producto);
         return MapperProducto.toDTO(productoGuardado);
     }
@@ -113,6 +119,62 @@ public class ProductoServiceImpl implements ProductoService {
         }
         producto.setStock(producto.getStock() - cantidad);
         return productoRepository.save(producto);
+    }
+
+    // Crear producto a partir de multipart/form-data con imagen
+    public ProductoDTO crearProductoConFoto(String nombre, String descripcion, Integer precio, Integer stock,
+                                            Integer idMarca, Integer idCategoria, MultipartFile foto) {
+        // Buscar Marca y Categoria
+        Marca marca = marcaRepositorio.findById(idMarca)
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada con id: " + idMarca));
+        CategoriaProducto categoria = categoriaProductoRepositorio.findById(idCategoria)
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada con id: " + idCategoria));
+
+        // Crear y guardar producto preliminarmente para obtener ID
+        Producto producto = new Producto();
+        producto.setNombre_producto(nombre);
+        producto.setDescripcion(descripcion);
+        producto.setPrecio(precio);
+        producto.setStock(stock);
+        producto.setMarca(marca);
+        producto.setCategoria(categoria);
+
+        producto = productoRepository.save(producto);
+
+        // Si viene imagen, guardar en uploads/productos y setear ruta
+        if (foto != null && !foto.isEmpty()) {
+            try {
+                String original = foto.getOriginalFilename();
+                String extension = "";
+                if (original != null && original.contains(".")) {
+                    extension = original.substring(original.lastIndexOf('.') + 1).toLowerCase();
+                }
+                if (extension.isBlank()) {
+                    extension = "png";
+                }
+
+                Path dir = Paths.get(System.getProperty("user.dir"), "uploads", "productos");
+                Files.createDirectories(dir);
+
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+                String filename = "producto-" + producto.getId_producto() + "-" + timestamp + "." + extension;
+                Path filePath = dir.resolve(filename);
+                Files.write(filePath, foto.getBytes());
+
+                // Guardamos ruta absoluta o relativa; aquí absoluta
+                producto.setFoto_url(filePath.toString());
+                producto = productoRepository.save(producto);
+            } catch (IOException e) {
+                // Si falla la escritura, dejamos foto_url en null
+            }
+        }
+
+        return MapperProducto.toDTO(producto);
+    }
+    
+    public String obtenerRutaFotoProducto(Integer id) {
+        Optional<Producto> producto = productoRepository.findById(id);
+        return producto.map(Producto::getFoto_url).orElse(null);
     }
     
 }

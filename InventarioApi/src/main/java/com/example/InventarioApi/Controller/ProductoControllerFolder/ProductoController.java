@@ -14,16 +14,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
 
 import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.UpdateProductoDTO;
 import com.example.InventarioApi.Model.ProductoModelsFolder.Producto;
 import com.example.InventarioApi.ServiceImpl.ProductoServiceImplFolder.ProductoServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 @RestController
 @RequestMapping("/inventario/productos")
+@Tag(name = "Productos", description = "Operaciones CRUD y gestión de stock de productos")
 public class ProductoController {
 
 
@@ -33,39 +47,115 @@ public class ProductoController {
     //---Metodos crud---//
 
     @GetMapping //Obtener Todos
+    @Operation(summary = "Listar productos", description = "Obtiene todos los productos")
+    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente")
     public List<ProductoDTO> obtenerTodosLosProductosController() {
         return productoService.obtenerTodosLosProductos();
     }
 
     @GetMapping("/{id}")
-    public ProductoDTO obtenerProductoPorIdController(@PathVariable Integer id) {
+    @Operation(summary = "Obtener producto por ID", description = "Devuelve un producto existente")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Producto encontrado"),
+        @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    public ProductoDTO obtenerProductoPorIdController(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) {
         return productoService.obtenerProductoPorId(id);
     }
 
     @PostMapping
+    @Operation(summary = "Crear producto", description = "Crea un nuevo producto")
+    @ApiResponse(responseCode = "200", description = "Producto creado correctamente")
     public ProductoDTO crearProducto(@RequestBody CreateProductoDTO createProductoDTO) {
         return productoService.crearProducto(createProductoDTO);
     }
 
     @PutMapping("/{id}") //Actulizar
-    public ProductoDTO updateProducto(@PathVariable Integer id, @RequestBody UpdateProductoDTO updateDTO) {
+    @Operation(summary = "Actualizar producto", description = "Actualiza completamente un producto por ID")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Producto actualizado"),
+        @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    public ProductoDTO updateProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id, @RequestBody UpdateProductoDTO updateDTO) {
         return productoService.actualizarProducto(id, updateDTO);
     }
 
     @PatchMapping("/{id}/sumar")
-    public Producto sumarStock(@PathVariable Integer id, @RequestParam Integer cantidad) {
+    @Operation(summary = "Sumar stock", description = "Incrementa el stock del producto")
+    public Producto sumarStock(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id,
+                               @Parameter(description = "Cantidad a sumar", example = "5") @RequestParam Integer cantidad) {
         return productoService.sumarStock(id, cantidad);
     }
 
     @PatchMapping("/{id}/restar")
-    public Producto restarStock(@PathVariable Integer id, @RequestParam Integer cantidad) {
+    @Operation(summary = "Restar stock", description = "Reduce el stock del producto")
+    public Producto restarStock(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id,
+                                @Parameter(description = "Cantidad a restar", example = "3") @RequestParam Integer cantidad) {
         return productoService.restarStock(id, cantidad);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable Integer id) {
+    @Operation(summary = "Eliminar producto", description = "Elimina un producto por ID")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Producto eliminado"),
+        @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    public ResponseEntity<Void> eliminarProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) {
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping(value = "/con-foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Crear producto con imagen", description = "Crea un producto recibiendo datos y una imagen vía multipart/form-data, guarda la imagen en uploads/productos y persiste la ruta en la BD")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Producto creado con imagen"),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    public ProductoDTO crearProductoConFoto(
+        @Parameter(description = "Nombre del producto") @RequestParam String nombre_producto,
+        @Parameter(description = "Descripción") @RequestParam String descripcion,
+        @Parameter(description = "Precio") @RequestParam Integer precio,
+        @Parameter(description = "Stock") @RequestParam Integer stock,
+        @Parameter(description = "ID de la marca") @RequestParam Integer id_marca,
+        @Parameter(description = "ID de la categoría") @RequestParam Integer id_categoria,
+        @Parameter(description = "Archivo de la foto") @RequestParam(value = "foto", required = false) MultipartFile foto
+    ) {
+        return productoService.crearProductoConFoto(
+            nombre_producto, descripcion, precio, stock, id_marca, id_categoria, foto
+        );
+    }
+
+    @GetMapping("/{id}/foto")
+    @Operation(summary = "Obtener foto del producto", description = "Devuelve la imagen del producto guardada en el servidor")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Imagen devuelta"),
+        @ApiResponse(responseCode = "404", description = "Foto no encontrada")
+    })
+    public ResponseEntity<byte[]> obtenerFotoProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) {
+        String fotoUrl = productoService.obtenerRutaFotoProducto(id);
+        if (fotoUrl == null || fotoUrl.isBlank()) {
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            Path path = Paths.get(fotoUrl);
+            if (!Files.exists(path)) {
+                return ResponseEntity.notFound().build();
+            }
+            byte[] bytes = Files.readAllBytes(path);
+            MediaType mediaType = mediaTypeFromPath(fotoUrl);
+            return ResponseEntity.ok().contentType(mediaType).body(bytes);
+        } catch (IOException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    private MediaType mediaTypeFromPath(String path) {
+        String lower = path.toLowerCase();
+        if (lower.endsWith(".jpg") || lower.endsWith(".jpeg")) return MediaType.IMAGE_JPEG;
+        if (lower.endsWith(".png")) return MediaType.IMAGE_PNG;
+        if (lower.endsWith(".gif")) return MediaType.IMAGE_GIF;
+        if (lower.endsWith(".webp")) return MediaType.parseMediaType("image/webp");
+        return MediaType.APPLICATION_OCTET_STREAM;
     }
 }
 

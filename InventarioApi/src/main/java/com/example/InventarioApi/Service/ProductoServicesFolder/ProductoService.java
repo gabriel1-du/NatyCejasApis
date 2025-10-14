@@ -6,6 +6,7 @@ import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.UpdateProductoDTO;
 import com.example.InventarioApi.Model.ProductoModelsFolder.Producto;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface ProductoService {
 
@@ -15,6 +16,9 @@ public interface ProductoService {
 
     ProductoDTO crearProducto(CreateProductoDTO createProductoDTO);
 
+    ProductoDTO crearProductoConFoto(String nombre, String descripcion, Integer precio, Integer stock,
+                                     Integer idMarca, Integer idCategoria, MultipartFile foto);
+
     ProductoDTO actualizarProducto(Integer id, UpdateProductoDTO updateDTO);
 
     void eliminarProducto(Integer id);
@@ -22,5 +26,7 @@ public interface ProductoService {
     Producto sumarStock(Integer id, Integer cantidad);
 
     Producto restarStock(Integer id, Integer cantidad);
+
+    String obtenerRutaFotoProducto(Integer id);
 
 }

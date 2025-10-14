@@ -35,6 +35,7 @@ public class Servicio {
 
     @Column(name = "precio", nullable = false)
     private Integer precio;
-    
+
+   
 
 }
