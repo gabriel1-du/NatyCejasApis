@@ -37,6 +37,7 @@ public class MapperProducto {
         dto.setDescripcion(producto.getDescripcion());
         dto.setPrecio(producto.getPrecio());
         dto.setStock(producto.getStock());
+        dto.setFoto_url(producto.getFoto_url());
 
         if (producto.getMarca() != null) {
             dto.setId_marca(producto.getMarca().getId_marca());

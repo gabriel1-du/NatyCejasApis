@@ -58,6 +58,19 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     public void eliminarProducto(Integer id) {
+        // Intentar eliminar la imagen asociada antes de eliminar el producto
+        Optional<Producto> productoOpt = productoRepository.findById(id);
+        productoOpt.ifPresent(p -> {
+            String ruta = p.getFoto_url();
+            if (ruta != null && !ruta.isBlank()) {
+                try {
+                    Path path = Paths.get(ruta);
+                    if (Files.exists(path)) {
+                        Files.delete(path);
+                    }
+                } catch (IOException ignored) {}
+            }
+        });
         productoRepository.deleteById(id);
     }
 
@@ -101,6 +114,56 @@ public class ProductoServiceImpl implements ProductoService {
 
         // Retornar DTO
         return MapperProducto.toDTO(actualizado);
+    }
+
+    // Actualizar producto vía multipart/form-data con posible nueva imagen
+    public ProductoDTO actualizarProductoConFoto(Integer id, String nombre, String descripcion, Integer precio, Integer stock,
+                                                 Integer idMarca, Integer idCategoria, MultipartFile foto) {
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));
+
+        // Actualizar campos básicos
+        producto.setNombre_producto(nombre);
+        producto.setDescripcion(descripcion);
+        producto.setPrecio(precio);
+        producto.setStock(stock);
+
+        // Actualizar asociaciones
+        Marca marca = marcaRepositorio.findById(idMarca)
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada con id: " + idMarca));
+        CategoriaProducto categoria = categoriaProductoRepositorio.findById(idCategoria)
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada con id: " + idCategoria));
+        producto.setMarca(marca);
+        producto.setCategoria(categoria);
+
+        producto = productoRepository.save(producto);
+
+        // Si viene una nueva imagen, guardarla y actualizar ruta
+        if (foto != null && !foto.isEmpty()) {
+            try {
+                String original = foto.getOriginalFilename();
+                String extension = "";
+                if (original != null && original.contains(".")) {
+                    extension = original.substring(original.lastIndexOf('.') + 1).toLowerCase();
+                }
+                if (extension.isBlank()) extension = "png";
+
+                Path dir = Paths.get(System.getProperty("user.dir"), "uploads", "productos");
+                Files.createDirectories(dir);
+
+                String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+                String filename = "producto-" + producto.getId_producto() + "-" + timestamp + "." + extension;
+                Path filePath = dir.resolve(filename);
+                Files.write(filePath, foto.getBytes());
+
+                producto.setFoto_url(filePath.toString());
+                producto = productoRepository.save(producto);
+            } catch (IOException e) {
+                // Si falla la escritura, dejamos la ruta como estaba
+            }
+        }
+
+        return MapperProducto.toDTO(producto);
     }
 
 

@@ -47,67 +47,67 @@ public class ProductoController {
     //---Metodos crud---//
 
     @GetMapping //Obtener Todos
-    @Operation(summary = "Listar productos", description = "Obtiene todos los productos")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente")
-    public List<ProductoDTO> obtenerTodosLosProductosController() {
+    @Operation(summary = "Listar productos", description = "Obtiene todos los productos") // Swagger
+    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente") // Swagger
+    public List<ProductoDTO> obtenerTodosLosProductosController() { // Metodos
         return productoService.obtenerTodosLosProductos();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener producto por ID", description = "Devuelve un producto existente")
-    @ApiResponses({
+    @Operation(summary = "Obtener producto por ID", description = "Devuelve un producto existente") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Producto encontrado"),
         @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     })
-    public ProductoDTO obtenerProductoPorIdController(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) {
+    public ProductoDTO obtenerProductoPorIdController(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) { // Metodos
         return productoService.obtenerProductoPorId(id);
     }
 
     @PostMapping
-    @Operation(summary = "Crear producto", description = "Crea un nuevo producto")
-    @ApiResponse(responseCode = "200", description = "Producto creado correctamente")
-    public ProductoDTO crearProducto(@RequestBody CreateProductoDTO createProductoDTO) {
+    @Operation(summary = "Crear producto", description = "Crea un nuevo producto") // Swagger
+    @ApiResponse(responseCode = "200", description = "Producto creado correctamente") // Swagger
+    public ProductoDTO crearProducto(@RequestBody CreateProductoDTO createProductoDTO) { // Metodos
         return productoService.crearProducto(createProductoDTO);
     }
 
     @PutMapping("/{id}") //Actulizar
-    @Operation(summary = "Actualizar producto", description = "Actualiza completamente un producto por ID")
-    @ApiResponses({
+    @Operation(summary = "Actualizar producto", description = "Actualiza completamente un producto por ID") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Producto actualizado"),
         @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     })
-    public ProductoDTO updateProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id, @RequestBody UpdateProductoDTO updateDTO) {
+    public ProductoDTO updateProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id, @RequestBody UpdateProductoDTO updateDTO) { // Metodos
         return productoService.actualizarProducto(id, updateDTO);
     }
 
     @PatchMapping("/{id}/sumar")
-    @Operation(summary = "Sumar stock", description = "Incrementa el stock del producto")
+    @Operation(summary = "Sumar stock", description = "Incrementa el stock del producto") // Swagger
     public Producto sumarStock(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id,
-                               @Parameter(description = "Cantidad a sumar", example = "5") @RequestParam Integer cantidad) {
+                               @Parameter(description = "Cantidad a sumar", example = "5") @RequestParam Integer cantidad) { // Metodos
         return productoService.sumarStock(id, cantidad);
     }
 
     @PatchMapping("/{id}/restar")
-    @Operation(summary = "Restar stock", description = "Reduce el stock del producto")
+    @Operation(summary = "Restar stock", description = "Reduce el stock del producto") // Swagger
     public Producto restarStock(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id,
-                                @Parameter(description = "Cantidad a restar", example = "3") @RequestParam Integer cantidad) {
+                                @Parameter(description = "Cantidad a restar", example = "3") @RequestParam Integer cantidad) { // Metodos
         return productoService.restarStock(id, cantidad);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar producto", description = "Elimina un producto por ID")
-    @ApiResponses({
+    @Operation(summary = "Eliminar producto", description = "Elimina un producto por ID") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "204", description = "Producto eliminado"),
         @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     })
-    public ResponseEntity<Void> eliminarProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) {
+    public ResponseEntity<Void> eliminarProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) { // Metodos
         productoService.eliminarProducto(id);
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping(value = "/con-foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Crear producto con imagen", description = "Crea un producto recibiendo datos y una imagen vía multipart/form-data, guarda la imagen en uploads/productos y persiste la ruta en la BD")
-    @ApiResponses({
+    @Operation(summary = "Crear producto con imagen", description = "Crea un producto recibiendo datos y una imagen vía multipart/form-data, guarda la imagen en uploads/productos y persiste la ruta en la BD") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Producto creado con imagen"),
         @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
@@ -119,19 +119,40 @@ public class ProductoController {
         @Parameter(description = "ID de la marca") @RequestParam Integer id_marca,
         @Parameter(description = "ID de la categoría") @RequestParam Integer id_categoria,
         @Parameter(description = "Archivo de la foto") @RequestParam(value = "foto", required = false) MultipartFile foto
-    ) {
+    ) { // Metodos
         return productoService.crearProductoConFoto(
             nombre_producto, descripcion, precio, stock, id_marca, id_categoria, foto
         );
     }
 
+    @PutMapping(value = "/{id}/con-foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Actualizar producto con imagen", description = "Actualiza datos y opcionalmente reemplaza la imagen del producto vía multipart/form-data") // Swagger
+    @ApiResponses({ // Swagger
+        @ApiResponse(responseCode = "200", description = "Producto actualizado con imagen"),
+        @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    public ProductoDTO actualizarProductoConFoto(
+        @Parameter(description = "ID del producto", example = "1") @PathVariable Integer id,
+        @Parameter(description = "Nombre del producto") @RequestParam String nombre_producto,
+        @Parameter(description = "Descripción") @RequestParam String descripcion,
+        @Parameter(description = "Precio") @RequestParam Integer precio,
+        @Parameter(description = "Stock") @RequestParam Integer stock,
+        @Parameter(description = "ID de la marca") @RequestParam Integer id_marca,
+        @Parameter(description = "ID de la categoría") @RequestParam Integer id_categoria,
+        @Parameter(description = "Archivo de la foto") @RequestParam(value = "foto", required = false) MultipartFile foto
+    ) { // Metodos
+        return productoService.actualizarProductoConFoto(
+            id, nombre_producto, descripcion, precio, stock, id_marca, id_categoria, foto
+        );
+    }
+
     @GetMapping("/{id}/foto")
-    @Operation(summary = "Obtener foto del producto", description = "Devuelve la imagen del producto guardada en el servidor")
-    @ApiResponses({
+    @Operation(summary = "Obtener foto del producto", description = "Devuelve la imagen del producto guardada en el servidor") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Imagen devuelta"),
         @ApiResponse(responseCode = "404", description = "Foto no encontrada")
     })
-    public ResponseEntity<byte[]> obtenerFotoProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) {
+    public ResponseEntity<byte[]> obtenerFotoProducto(@Parameter(description = "ID del producto", example = "1") @PathVariable Integer id) { // Metodos
         String fotoUrl = productoService.obtenerRutaFotoProducto(id);
         if (fotoUrl == null || fotoUrl.isBlank()) {
             return ResponseEntity.notFound().build();

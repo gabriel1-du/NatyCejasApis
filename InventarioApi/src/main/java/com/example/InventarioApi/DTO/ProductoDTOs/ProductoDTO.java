@@ -15,6 +15,7 @@ public class ProductoDTO {
     private String descripcion;
     private Integer precio;
     private Integer stock;
+    private String foto_url; // atributo de imagen
 
     // Marca
     private Integer id_marca;
