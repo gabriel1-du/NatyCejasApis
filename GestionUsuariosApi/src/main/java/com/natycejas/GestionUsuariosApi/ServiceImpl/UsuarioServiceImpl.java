@@ -68,4 +68,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         usuarioRepository.deleteById(id);
     }
 
+    // Autenticación por correo y contraseña
+    @Override
+    public UsuarioDTO encontrarUsuarioPorCorreoyContrasena(String email, String contrasena) {
+        return usuarioRepository.findByEmailAndContrasena(email, contrasena)
+                .map(usuarioMapper::toDTO)
+                .orElseThrow(() -> new RuntimeException("Credenciales no validas"));
+    }
 }

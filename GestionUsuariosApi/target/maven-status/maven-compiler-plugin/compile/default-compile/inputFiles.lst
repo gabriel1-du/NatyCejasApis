@@ -1,4 +1,5 @@
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\CarritoDtosFolder\CarritoCreateDTO.java
+C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\auth\AuthRequest.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\UsuarioDtosFolder\UsuarioCreateDTO.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\ModelFolder\Carrito.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\ServiceImpl\CarritoServiceImpl.java
@@ -13,6 +14,7 @@ C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\CarritoDtosFolder\CarritoDTO.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\CarritoProductoDtosFolder\CarritoProductoCreateDTO.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\ControllerFolder\CarritoController.java
+C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\auth\AuthController.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\PedidoDtosFolder\PedidoDTO.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\RepositoryFolder\UsuarioRepository.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\Service\CarritoProductoService.java

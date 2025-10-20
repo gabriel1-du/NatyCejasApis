@@ -16,4 +16,6 @@ public interface UsuarioService {
     UsuarioDTO actualizarUsuario(Integer id, UsuarioUpdateDTO usuarioUpdateDTO);
     void eliminarUsuario(Integer id);
 
+    // Autenticación
+    UsuarioDTO encontrarUsuarioPorCorreoyContrasena(String email, String contrasena);
 }
