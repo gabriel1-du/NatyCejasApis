@@ -11,10 +11,11 @@ public class ExternalClientsConfig {
 
     @Bean
     public InventarioClient inventarioClient(
-            @Value("${inventario.api.base-url}") String baseUrl) {
+            @Value("${inventario.api.base-url}") String baseUrl,
+            @Value("${inventario.api.connect-timeout-ms:5000}") long connectTimeoutMs) {
         return InventarioClient.builder()
                 .baseUrl(baseUrl)
-                .connectTimeoutMillis(5000)
+                .connectTimeoutMillis(connectTimeoutMs)
                 .build();
     }
 }

@@ -25,8 +25,6 @@ public class CarritoProductoServiceImpl implements CarritoProductoService{
     @Autowired
     private CarritoProductoMapper carritoProductoMapper;
 
-    @Autowired
-    private InventarioClient inventarioClient;
 
     @Override
     public List<CarritoProductoDTO> listarTodos() {
@@ -45,8 +43,6 @@ public class CarritoProductoServiceImpl implements CarritoProductoService{
     @Override
     public CarritoProductoDTO crear(CarritoProductoCreateDTO carritoProductoCreateDTO) {
         CarritoProducto carritoProducto = carritoProductoMapper.toEntity(carritoProductoCreateDTO);
-        // Restar stock en inventario externo antes de guardar
-        inventarioClient.restarStock(carritoProductoCreateDTO.getIdProducto(), carritoProductoCreateDTO.getCantidad());
         carritoProducto = carritoProductoRepository.save(carritoProducto);
         return carritoProductoMapper.toDTO(carritoProducto);
     }
@@ -61,10 +57,6 @@ public class CarritoProductoServiceImpl implements CarritoProductoService{
 
             carritoProductoMapper.updateEntityFromDTO(carritoProductoUpdateDTO, carritoProducto);
 
-            if (cantidadNueva != null && cantidadAnterior != null && cantidadNueva > cantidadAnterior) {
-                int diferencia = cantidadNueva - cantidadAnterior;
-                inventarioClient.restarStock(carritoProducto.getIdProducto(), diferencia);
-            }
 
             carritoProducto = carritoProductoRepository.save(carritoProducto);
             return carritoProductoMapper.toDTO(carritoProducto);
