@@ -75,4 +75,16 @@ public class UsuarioServiceImpl implements UsuarioService {
                 .map(usuarioMapper::toDTO)
                 .orElseThrow(() -> new RuntimeException("Credenciales no validas"));
     }
+
+    // Crudo (devuelve la entidad Usuario)
+    @Override
+    public Usuario obtenerUsuarioCrudoPorId(Integer id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id " + id));
+    }
+
+    @Override
+    public List<Usuario> listarUsuariosCrudo() {
+        return usuarioRepository.findAll();
+    }
 }

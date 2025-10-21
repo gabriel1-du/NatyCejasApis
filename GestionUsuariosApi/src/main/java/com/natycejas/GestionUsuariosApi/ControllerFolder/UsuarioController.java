@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.natycejas.GestionUsuariosApi.DTOFolder.UsuarioDtosFolder.UsuarioCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.UsuarioDtosFolder.UsuarioDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.UsuarioDtosFolder.UsuarioUpdateDTO;
+import com.natycejas.GestionUsuariosApi.ModelFolder.Usuario;
 import com.natycejas.GestionUsuariosApi.Service.UsuarioService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -85,6 +86,19 @@ public class UsuarioController {
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> listarUsuariosController() {
         return ResponseEntity.ok(usuarioService.listarUsuarios());
+    }
+
+    // Endpoints crudo (devuelven la entidad Usuario)
+    @GetMapping("/crudo/{id}")
+    public ResponseEntity<Usuario> obtenerUsuarioCrudoPorId(
+            @Parameter(description = "ID único del usuario", required = true, example = "1")
+            @PathVariable Integer id) {
+        return ResponseEntity.ok(usuarioService.obtenerUsuarioCrudoPorId(id));
+    }
+
+    @GetMapping("/crudo")
+    public ResponseEntity<List<Usuario>> listarUsuariosCrudo() {
+        return ResponseEntity.ok(usuarioService.listarUsuariosCrudo());
     }
 
     @Operation(
