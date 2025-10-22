@@ -13,21 +13,45 @@ import org.mockito.MockitoAnnotations;
 
 import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
 import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
+import com.example.InventarioApi.Model.Marca;
+import com.example.InventarioApi.Model.ProductoModelsFolder.CategoriaProducto;
 import com.example.InventarioApi.Model.ProductoModelsFolder.Producto;
+import com.example.InventarioApi.Repository.MarcaRepository;
+import com.example.InventarioApi.Repository.ProductoRepositoriesFolder.CategoriaProductoRepository;
 import com.example.InventarioApi.Repository.ProductoRepositoriesFolder.ProductoRepository;
 import com.example.InventarioApi.ServiceImpl.ProductoServiceImplFolder.ProductoServiceImpl;
+
+import java.util.Optional;
 
 public class ProductServiceImplTest {
     
     @Mock
     private ProductoRepository productoRepositorio;
 
+    @Mock
+    private MarcaRepository marcaRepositorio;
+
+    @Mock
+    private CategoriaProductoRepository categoriaProductoRepositorio;
+
     @InjectMocks
     private ProductoServiceImpl productoServicio;
+
+    private Marca marca;
+    private CategoriaProducto categoria;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        marca = new Marca();
+        marca.setId_marca(1);
+        marca.setNombre_marca("Acme");
+        categoria = new CategoriaProducto();
+        categoria.setId_categoria_producto(2);
+        categoria.setNombre_categoria_producto("Capilares");
+
+        when(marcaRepositorio.findById(1)).thenReturn(Optional.of(marca));
+        when(categoriaProductoRepositorio.findById(2)).thenReturn(Optional.of(categoria));
     }
 
     @Test
@@ -49,6 +73,8 @@ public class ProductServiceImplTest {
         productoGuardado.setDescripcion("Shampoo revitalizante");
         productoGuardado.setPrecio(5000);
         productoGuardado.setStock(10);
+        productoGuardado.setMarca(marca);
+        productoGuardado.setCategoria(categoria);
 
         // Mock del repositorio
         when(productoRepositorio.save(any(Producto.class))).thenReturn(productoGuardado);
@@ -64,5 +90,4 @@ public class ProductServiceImplTest {
         assertEquals(5000, resultado.getPrecio());
         assertEquals(10, resultado.getStock());
     }
-
 }
