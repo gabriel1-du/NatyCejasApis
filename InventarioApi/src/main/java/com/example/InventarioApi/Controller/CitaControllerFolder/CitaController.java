@@ -26,22 +26,22 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Controller
 @RestController
 @RequestMapping("inventario/citas") // URL acceso
-@Tag(name = "Citas", description = "Operaciones CRUD de citas")
+@Tag(name = "Citas", description = "Operaciones CRUD de citas") // Swagger
 public class CitaController {
 
     @Autowired
     private CitaServiceImpl citaServiceImpl; // Inyección de servicio impl
 
     @GetMapping
-    @Operation(summary = "Listar citas", description = "Obtiene todas las citas")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente")
+    @Operation(summary = "Listar citas", description = "Obtiene todas las citas") // Swagger
+    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente") // Swagger
     public List<Cita> obtenerTodosController() { // Metodos
         return citaServiceImpl.obtenerTodos();
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener cita por ID", description = "Devuelve una cita existente o 404 si no existe")
-    @ApiResponses({
+    @Operation(summary = "Obtener cita por ID", description = "Devuelve una cita existente o 404 si no existe") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Cita encontrada"),
         @ApiResponse(responseCode = "404", description = "Cita no encontrada")
     })
@@ -54,15 +54,15 @@ public class CitaController {
     }
 
     @PostMapping
-    @Operation(summary = "Crear cita", description = "Crea una nueva cita")
-    @ApiResponse(responseCode = "200", description = "Cita creada correctamente")
+    @Operation(summary = "Crear cita", description = "Crea una nueva cita") // Swagger
+    @ApiResponse(responseCode = "200", description = "Cita creada correctamente") // Swagger
     public Cita crearController(@RequestBody Cita cita) { // Metodos
         return citaServiceImpl.crear(cita);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Actualizar cita", description = "Actualiza una cita existente")
-    @ApiResponses({
+    @Operation(summary = "Actualizar cita", description = "Actualiza una cita existente") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Cita actualizada correctamente"),
         @ApiResponse(responseCode = "404", description = "Cita no encontrada")
     })
@@ -75,8 +75,8 @@ public class CitaController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar cita", description = "Elimina una cita por su ID")
-    @ApiResponses({
+    @Operation(summary = "Eliminar cita", description = "Elimina una cita por su ID") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Cita eliminada correctamente"),
         @ApiResponse(responseCode = "404", description = "Cita no encontrada")
     })

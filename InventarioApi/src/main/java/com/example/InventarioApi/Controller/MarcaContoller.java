@@ -25,42 +25,42 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/inventario/marcas")
 @RequiredArgsConstructor
-@Tag(name = "Marcas", description = "Operaciones CRUD de marcas")
+@Tag(name = "Marcas", description = "Operaciones CRUD de marcas") // Swagger
 public class MarcaContoller {
 
     @Autowired
     MarcaServiceImpl marcaService;
 
     @GetMapping //Buscar todo
-    @Operation(summary = "Listar marcas", description = "Obtiene todas las marcas registradas")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente")
-    public List<Marca> listarMarcas() {
+    @Operation(summary = "Listar marcas", description = "Obtiene todas las marcas registradas") // Swagger
+    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente") // Swagger
+    public List<Marca> listarMarcas() { // Metodos
         return marcaService.listarMarcas();
     }
 
     @GetMapping("/{id}") //Buscar por ID
-    @Operation(summary = "Obtener marca por ID", description = "Devuelve una marca existente o 404 si no existe")
-    @ApiResponses({
+    @Operation(summary = "Obtener marca por ID", description = "Devuelve una marca existente o 404 si no existe") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Marca encontrada"),
         @ApiResponse(responseCode = "404", description = "Marca no encontrada")
     })
-    public ResponseEntity<Marca> obtenerMarca(@Parameter(description = "ID de la marca", example = "1") @PathVariable Integer id) {
+    public ResponseEntity<Marca> obtenerMarca(@Parameter(description = "ID de la marca", example = "1") @PathVariable Integer id) { // Metodos
         return marcaService.obtenerMarcaPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping //Crear
-    @Operation(summary = "Crear marca", description = "Crea una nueva marca")
-    @ApiResponse(responseCode = "200", description = "Marca creada correctamente")
-    public Marca crearMarca(@RequestBody Marca marca) {
+    @Operation(summary = "Crear marca", description = "Crea una nueva marca") // Swagger
+    @ApiResponse(responseCode = "200", description = "Marca creada correctamente") // Swagger
+    public Marca crearMarca(@RequestBody Marca marca) { // Metodos
         return marcaService.guardarMarca(marca);
     }
 
     @DeleteMapping("/{id}") //Eliminar por ID
-    @Operation(summary = "Eliminar marca", description = "Elimina una marca por su ID")
-    @ApiResponse(responseCode = "204", description = "Marca eliminada")
-    public ResponseEntity<Void> eliminarMarca(@Parameter(description = "ID de la marca", example = "1") @PathVariable Integer id) {
+    @Operation(summary = "Eliminar marca", description = "Elimina una marca por su ID") // Swagger
+    @ApiResponse(responseCode = "204", description = "Marca eliminada") // Swagger
+    public ResponseEntity<Void> eliminarMarca(@Parameter(description = "ID de la marca", example = "1") @PathVariable Integer id) { // Metodos
         marcaService.eliminarMarca(id);
         return ResponseEntity.noContent().build();
     }

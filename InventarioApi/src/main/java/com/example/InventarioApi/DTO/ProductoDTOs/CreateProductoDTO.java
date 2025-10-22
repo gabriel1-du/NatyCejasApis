@@ -18,5 +18,6 @@ public class CreateProductoDTO {
     private Integer stock;
     private Integer id_marca; //Marca
     private Integer id_categoria; //CategoriaProducto
+    private String foto_url; // URL de imagen opcional
 
 }

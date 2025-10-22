@@ -22,7 +22,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/inventario/categorias")
-@Tag(name = "Categorías", description = "Operaciones CRUD de categorías de producto")
+@Tag(name = "Categorías", description = "Operaciones CRUD de categorías de producto") // Swagger
 public class CategoriaProductoController {
 
     @Autowired
@@ -30,20 +30,20 @@ public class CategoriaProductoController {
 
     // Listar todas las categorías
     @GetMapping
-    @Operation(summary = "Listar categorías", description = "Obtiene todas las categorías")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente")
-    public List<CategoriaProducto> listarCategorias() {
+    @Operation(summary = "Listar categorías", description = "Obtiene todas las categorías") // Swagger
+    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente") // Swagger
+    public List<CategoriaProducto> listarCategorias() { // Metodos
         return categoriaServicio.listarCategorias();
     }
 
     // Obtener una categoría por ID
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener categoría por ID", description = "Devuelve una categoría existente")
-    @ApiResponses({
+    @Operation(summary = "Obtener categoría por ID", description = "Devuelve una categoría existente") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Categoría encontrada"),
         @ApiResponse(responseCode = "404", description = "Categoría no encontrada")
     })
-    public ResponseEntity<CategoriaProducto> obtenerCategoria(@Parameter(description = "ID de la categoría", example = "1") @PathVariable Integer id) {
+    public ResponseEntity<CategoriaProducto> obtenerCategoria(@Parameter(description = "ID de la categoría", example = "1") @PathVariable Integer id) { // Metodos
         return categoriaServicio.obtenerCategoriaPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -51,20 +51,20 @@ public class CategoriaProductoController {
 
     // Crear una nueva categoría
     @PostMapping
-    @Operation(summary = "Crear categoría", description = "Crea una nueva categoría")
-    @ApiResponse(responseCode = "200", description = "Categoría creada correctamente")
-    public CategoriaProducto crearCategoria(@RequestBody CategoriaProducto categoria) {
+    @Operation(summary = "Crear categoría", description = "Crea una nueva categoría") // Swagger
+    @ApiResponse(responseCode = "200", description = "Categoría creada correctamente") // Swagger
+    public CategoriaProducto crearCategoria(@RequestBody CategoriaProducto categoria) { // Metodos
         return categoriaServicio.guardarCategoria(categoria);
     }
 
     // Eliminar una categoría por ID
     @DeleteMapping("/{id}")
-    @Operation(summary = "Eliminar categoría", description = "Elimina una categoría por ID")
-    @ApiResponses({
+    @Operation(summary = "Eliminar categoría", description = "Elimina una categoría por ID") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "204", description = "Categoría eliminada"),
         @ApiResponse(responseCode = "404", description = "Categoría no encontrada")
     })
-    public ResponseEntity<Void> eliminarCategoria(@Parameter(description = "ID de la categoría", example = "1") @PathVariable Integer id) {
+    public ResponseEntity<Void> eliminarCategoria(@Parameter(description = "ID de la categoría", example = "1") @PathVariable Integer id) { // Metodos
         categoriaServicio.eliminarCategoria(id);
         return ResponseEntity.noContent().build();
     }

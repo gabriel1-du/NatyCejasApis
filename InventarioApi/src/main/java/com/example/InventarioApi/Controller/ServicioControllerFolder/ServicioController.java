@@ -27,7 +27,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Controller
 @RestController
 @RequestMapping("inventario/servicios")//URL acceso
-@Tag(name = "Servicios", description = "Operaciones CRUD de servicios")
+@Tag(name = "Servicios", description = "Operaciones CRUD de servicios") // Swagger
 public class ServicioController {
 
     @Autowired
@@ -35,19 +35,19 @@ public class ServicioController {
     
 
     @GetMapping
-    @Operation(summary = "Listar servicios", description = "Obtiene todos los servicios")
-    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente")
-    public List<ServicioDTO> obtenerTodosController() {//Metodo para traer todos los metods (GET)
+    @Operation(summary = "Listar servicios", description = "Obtiene todos los servicios") // Swagger
+    @ApiResponse(responseCode = "200", description = "Lista obtenida correctamente") // Swagger
+    public List<ServicioDTO> obtenerTodosController() { // Metodos
         return servicioServiceImpl.obtenerTodos();
     }
 
     @GetMapping("/{id}")//URL
-    @Operation(summary = "Obtener servicio por ID", description = "Devuelve un servicio existente o 404 si no existe")
-    @ApiResponses({
+    @Operation(summary = "Obtener servicio por ID", description = "Devuelve un servicio existente o 404 si no existe") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Servicio encontrado"),
         @ApiResponse(responseCode = "404", description = "Servicio no encontrado")
     })
-    public ResponseEntity<ServicioDTO> obtenerPorIdController(@Parameter(description = "ID del servicio", example = "1") @PathVariable Integer id) {//Obtener por id al servicio por id (GET)
+    public ResponseEntity<ServicioDTO> obtenerPorIdController(@Parameter(description = "ID del servicio", example = "1") @PathVariable Integer id) { // Metodos
         try {
             return ResponseEntity.ok(servicioServiceImpl.obtenerPorId(id));
         } catch (RuntimeException e) {
@@ -56,20 +56,20 @@ public class ServicioController {
     }
 
     @PostMapping
-    @Operation(summary = "Crear servicio", description = "Crea un nuevo servicio")
-    @ApiResponse(responseCode = "200", description = "Servicio creado correctamente")
-    public ServicioDTO guardarController(@RequestBody CreateServicioDTO dto) {//Guardar Servicio con el DTO de crear
+    @Operation(summary = "Crear servicio", description = "Crea un nuevo servicio") // Swagger
+    @ApiResponse(responseCode = "200", description = "Servicio creado correctamente") // Swagger
+    public ServicioDTO guardarController(@RequestBody CreateServicioDTO dto) { // Metodos
         return servicioServiceImpl.guardar(dto);
     }
 
 
     @PutMapping("/{id}")//Ingresar id URL
-    @Operation(summary = "Actualizar servicio", description = "Actualiza completamente un servicio por ID")
-    @ApiResponses({
+    @Operation(summary = "Actualizar servicio", description = "Actualiza completamente un servicio por ID") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Servicio actualizado"),
         @ApiResponse(responseCode = "404", description = "Servicio no encontrado")
     })
-    public ResponseEntity<ServicioDTO> actualizarController(@Parameter(description = "ID del servicio", example = "1") @PathVariable Integer id, @RequestBody UpdateServicioDTO dto) { //Metodo para actullizar (PUT
+    public ResponseEntity<ServicioDTO> actualizarController(@Parameter(description = "ID del servicio", example = "1") @PathVariable Integer id, @RequestBody UpdateServicioDTO dto) { // Metodos
         try {
             return ResponseEntity.ok(servicioServiceImpl.actualizar(id, dto));
         } catch (RuntimeException e) {
@@ -78,12 +78,12 @@ public class ServicioController {
     }
 
     @DeleteMapping("/{id}")//Ingresar id URl
-    @Operation(summary = "Eliminar servicio", description = "Elimina un servicio por ID")
-    @ApiResponses({
+    @Operation(summary = "Eliminar servicio", description = "Elimina un servicio por ID") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "204", description = "Servicio eliminado"),
         @ApiResponse(responseCode = "404", description = "Servicio no encontrado")
     })
-    public ResponseEntity<Void> eliminarController(@Parameter(description = "ID del servicio", example = "1") @PathVariable Integer id) {//Eliminar id 
+    public ResponseEntity<Void> eliminarController(@Parameter(description = "ID del servicio", example = "1") @PathVariable Integer id) { // Metodos
         try {
             servicioServiceImpl.eliminar(id);
             return ResponseEntity.noContent().build();

@@ -92,6 +92,13 @@ public class ProductoServiceImpl implements ProductoService {
         producto.setStock(createDTO.getStock());
         producto.setMarca(marca);
         producto.setCategoria(categoria);
+        // Setear URL de imagen si viene en el DTO (limitar a 255, trimmed)
+        if (createDTO.getFoto_url() != null) {
+            String trimmed = createDTO.getFoto_url().trim();
+            if (!trimmed.isBlank()) {
+                producto.setFoto_url(trimmed.length() > 255 ? trimmed.substring(0, 255) : trimmed);
+            }
+        }
         Producto productoGuardado = productoRepository.save(producto);
         return MapperProducto.toDTO(productoGuardado);
     }

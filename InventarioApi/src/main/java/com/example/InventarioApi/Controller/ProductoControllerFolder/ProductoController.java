@@ -35,14 +35,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/inventario/productos")
-@Tag(name = "Productos", description = "Operaciones CRUD y gestión de stock de productos")
+@Tag(name = "Productos", description = "Operaciones CRUD y gestión de stock de productos") // Swagger
 public class ProductoController {
 
 
     @Autowired
     private ProductoServiceImpl productoService;
 
-    //---Metodos crud---//
+    // --- Endpoints normales (CRUD y stock) ---
 
     @GetMapping //Obtener Todos
     @Operation(summary = "Listar productos", description = "Obtiene todos los productos") // Swagger
@@ -103,6 +103,7 @@ public class ProductoController {
         return ResponseEntity.noContent().build();
     }
 
+    // --- Endpoints media type (multipart/form-data) ---
     @PostMapping(value = "/con-foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Crear producto con imagen", description = "Crea un producto recibiendo datos y una imagen vía multipart/form-data, guarda la imagen en uploads/productos y persiste la ruta en la BD") // Swagger
     @ApiResponses({ // Swagger
@@ -144,6 +145,7 @@ public class ProductoController {
         );
     }
 
+    // --- Endpoints media (imagen) ---
     @GetMapping("/{id}/foto")
     @Operation(summary = "Obtener foto del producto", description = "Devuelve la imagen del producto guardada en el servidor") // Swagger
     @ApiResponses({ // Swagger
@@ -196,9 +198,10 @@ public class ProductoController {
         if (lower.endsWith(".webp")) return MediaType.parseMediaType("image/webp");
         return MediaType.APPLICATION_OCTET_STREAM;
     }
+    // --- Endpoints con URL ---
     @PutMapping(value = "/{id}/con-url")
-    @Operation(summary = "Actualizar producto con URL de imagen", description = "Actualiza datos y opcionalmente reemplaza la imagen del producto usando una URL pública")
-    @ApiResponses({
+    @Operation(summary = "Actualizar producto con URL de imagen", description = "Actualiza datos y opcionalmente reemplaza la imagen del producto usando una URL pública") // Swagger
+    @ApiResponses({ // Swagger
         @ApiResponse(responseCode = "200", description = "Producto actualizado con URL de imagen"),
         @ApiResponse(responseCode = "404", description = "Producto no encontrado")
     })
@@ -211,7 +214,7 @@ public class ProductoController {
         @Parameter(description = "ID de la marca") @RequestParam Integer id_marca,
         @Parameter(description = "ID de la categoría") @RequestParam Integer id_categoria,
         @Parameter(description = "URL de la imagen pública") @RequestParam(name = "foto_url", required = false) String fotoUrl
-    ) {
+    ) { // Metodos
         return productoService.actualizarProductoConUrl(
             id, nombre_producto, descripcion, precio, stock, id_marca, id_categoria, fotoUrl
         );
