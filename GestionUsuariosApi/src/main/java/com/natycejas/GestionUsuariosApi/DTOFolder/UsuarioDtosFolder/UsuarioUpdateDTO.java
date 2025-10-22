@@ -14,4 +14,6 @@ public class UsuarioUpdateDTO {
     private String direccion;
     private String contrasena;
     private Boolean admin;
+    private Integer idRegion;
+    private Integer idComuna;
 }

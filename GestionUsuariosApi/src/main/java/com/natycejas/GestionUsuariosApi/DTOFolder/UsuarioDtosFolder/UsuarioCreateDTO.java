@@ -16,4 +16,6 @@ public class UsuarioCreateDTO {
     private String direccion;
     private String contrasena;
     private Boolean admin = false;
+    private Integer idRegion;
+    private Integer idComuna;
 }

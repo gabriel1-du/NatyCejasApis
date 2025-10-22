@@ -16,4 +16,6 @@ public class UsuarioDTO {
     private String telefono;
     private String direccion;
     private Boolean admin;
+    private String nombreRegion;
+    private String nombreComuna;
 }

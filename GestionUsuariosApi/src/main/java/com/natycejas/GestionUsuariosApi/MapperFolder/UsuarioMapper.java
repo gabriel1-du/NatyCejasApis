@@ -24,6 +24,12 @@ public class UsuarioMapper {
         usuarioDTO.setTelefono(usuario.getTelefono());
         usuarioDTO.setDireccion(usuario.getDireccion());
         usuarioDTO.setAdmin(usuario.getAdmin());
+        if (usuario.getRegion() != null) {
+            usuarioDTO.setNombreRegion(usuario.getRegion().getNombreRegion());
+        }
+        if (usuario.getComuna() != null) {
+            usuarioDTO.setNombreComuna(usuario.getComuna().getNombreComuna());
+        }
         
         return usuarioDTO;
     }

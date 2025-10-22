@@ -40,4 +40,12 @@ public class Usuario {
     
     @Column(name = "admin")
     private Boolean admin = false;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "region_usuario", referencedColumnName = "id_region")
+    private Region region;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "comuna_usuario", referencedColumnName = "id_comuna")
+    private Comuna comuna;
 }
