@@ -18,12 +18,17 @@ public interface ProductoService {
 
     ProductoDTO crearProductoConFoto(String nombre, String descripcion, Integer precio, Integer stock,
                                      Integer idMarca, Integer idCategoria, MultipartFile foto);
+    
+    ProductoDTO crearProductoConUrl(String nombre, String descripcion, Integer precio, Integer stock,
+                                     Integer idMarca, Integer idCategoria, String fotoUrl);
     //Sin Foto
     ProductoDTO actualizarProducto(Integer id, UpdateProductoDTO updateDTO);
 
     //Con foto
     ProductoDTO actualizarProductoConFoto(Integer id, String nombre, String descripcion, Integer precio, Integer stock,
                                           Integer idMarca, Integer idCategoria, org.springframework.web.multipart.MultipartFile foto);
+    ProductoDTO actualizarProductoConUrl(Integer id, String nombre, String descripcion, Integer precio, Integer stock,
+                                         Integer idMarca, Integer idCategoria, String fotoUrl);
 
     void eliminarProducto(Integer id);
 

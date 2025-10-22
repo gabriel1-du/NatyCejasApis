@@ -240,4 +240,68 @@ public class ProductoServiceImpl implements ProductoService {
         return producto.map(Producto::getFoto_url).orElse(null);
     }
     
+    // Actualizar producto usando una URL pública (sin subir archivo)
+    public ProductoDTO actualizarProductoConUrl(Integer id, String nombre, String descripcion, Integer precio, Integer stock,
+                                                Integer idMarca, Integer idCategoria, String fotoUrl) {
+        // Buscar producto en BD
+        Producto producto = productoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado con id: " + id));
+
+        // Actualizar campos básicos
+        producto.setNombre_producto(nombre);
+        producto.setDescripcion(descripcion);
+        producto.setPrecio(precio);
+        producto.setStock(stock);
+
+        // Actualizar asociaciones
+        Marca marca = marcaRepositorio.findById(idMarca)
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada con id: " + idMarca));
+        CategoriaProducto categoria = categoriaProductoRepositorio.findById(idCategoria)
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada con id: " + idCategoria));
+        producto.setMarca(marca);
+        producto.setCategoria(categoria);
+
+        // Si viene una URL válida, reemplazar foto_url (limitando a 255)
+        if (fotoUrl != null) {
+            String trimmed = fotoUrl.trim();
+            if (!trimmed.isBlank()) {
+                producto.setFoto_url(trimmed.length() > 255 ? trimmed.substring(0, 255) : trimmed);
+            }
+        }
+
+        // Guardar cambios
+        producto = productoRepository.save(producto);
+        return MapperProducto.toDTO(producto);
+    }
+    
+    // Crear producto a partir de una URL de imagen pública (sin subir archivo)
+    public ProductoDTO crearProductoConUrl(String nombre, String descripcion, Integer precio, Integer stock,
+                                           Integer idMarca, Integer idCategoria, String fotoUrl) {
+        // Buscar Marca y Categoria
+        Marca marca = marcaRepositorio.findById(idMarca)
+                .orElseThrow(() -> new RuntimeException("Marca no encontrada con id: " + idMarca));
+        CategoriaProducto categoria = categoriaProductoRepositorio.findById(idCategoria)
+                .orElseThrow(() -> new RuntimeException("Categoria no encontrada con id: " + idCategoria));
+
+        // Crear producto y setear campos
+        Producto producto = new Producto();
+        producto.setNombre_producto(nombre);
+        producto.setDescripcion(descripcion);
+        producto.setPrecio(precio);
+        producto.setStock(stock);
+        producto.setMarca(marca);
+        producto.setCategoria(categoria);
+
+        // Setear URL si viene y limitar a 255
+        if (fotoUrl != null) {
+            String trimmed = fotoUrl.trim();
+            if (!trimmed.isBlank()) {
+                producto.setFoto_url(trimmed.length() > 255 ? trimmed.substring(0, 255) : trimmed);
+            }
+        }
+
+        producto = productoRepository.save(producto);
+        return MapperProducto.toDTO(producto);
+    }
+    
 }

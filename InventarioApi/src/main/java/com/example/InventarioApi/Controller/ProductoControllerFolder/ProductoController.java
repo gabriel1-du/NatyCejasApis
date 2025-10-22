@@ -155,6 +155,26 @@ public class ProductoController {
         if (fotoUrl == null || fotoUrl.isBlank()) {
             return ResponseEntity.notFound().build();
         }
+        // Si es URL remota (http/https), la descargamos y devolvemos los bytes
+        if (fotoUrl.startsWith("http://") || fotoUrl.startsWith("https://")) {
+            try {
+                java.net.URL url = new java.net.URL(fotoUrl);
+                java.net.URLConnection conn = url.openConnection();
+                conn.setConnectTimeout(3000);
+                conn.setReadTimeout(5000);
+                String contentType = conn.getContentType();
+                try (java.io.InputStream in = conn.getInputStream()) {
+                    byte[] bytes = in.readAllBytes();
+                    MediaType mediaType = (contentType != null && !contentType.isBlank())
+                        ? MediaType.parseMediaType(contentType)
+                        : mediaTypeFromPath(fotoUrl);
+                    return ResponseEntity.ok().contentType(mediaType).body(bytes);
+                }
+            } catch (java.io.IOException e) {
+                return ResponseEntity.notFound().build();
+            }
+        }
+        // Caso contrario, tratamos como ruta local en el servidor
         try {
             Path path = Paths.get(fotoUrl);
             if (!Files.exists(path)) {
@@ -175,6 +195,26 @@ public class ProductoController {
         if (lower.endsWith(".gif")) return MediaType.IMAGE_GIF;
         if (lower.endsWith(".webp")) return MediaType.parseMediaType("image/webp");
         return MediaType.APPLICATION_OCTET_STREAM;
+    }
+    @PutMapping(value = "/{id}/con-url")
+    @Operation(summary = "Actualizar producto con URL de imagen", description = "Actualiza datos y opcionalmente reemplaza la imagen del producto usando una URL pública")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Producto actualizado con URL de imagen"),
+        @ApiResponse(responseCode = "404", description = "Producto no encontrado")
+    })
+    public ProductoDTO actualizarProductoConUrl(
+        @Parameter(description = "ID del producto", example = "1") @PathVariable Integer id,
+        @Parameter(description = "Nombre del producto") @RequestParam String nombre_producto,
+        @Parameter(description = "Descripción") @RequestParam String descripcion,
+        @Parameter(description = "Precio") @RequestParam Integer precio,
+        @Parameter(description = "Stock") @RequestParam Integer stock,
+        @Parameter(description = "ID de la marca") @RequestParam Integer id_marca,
+        @Parameter(description = "ID de la categoría") @RequestParam Integer id_categoria,
+        @Parameter(description = "URL de la imagen pública") @RequestParam(name = "foto_url", required = false) String fotoUrl
+    ) {
+        return productoService.actualizarProductoConUrl(
+            id, nombre_producto, descripcion, precio, stock, id_marca, id_categoria, fotoUrl
+        );
     }
 }
 

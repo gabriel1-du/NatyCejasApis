@@ -43,7 +43,7 @@ public class Producto {
     @JoinColumn(name = "categoria")
     private CategoriaProducto categoria; // Nueva relación con CATEGORIA_PRODUCTO
 
-    @Column(name= "foto_url") //Atributo para subir la foto
+    @Column(name= "foto_url", length = 255) //Atributo para subir la foto
     private String foto_url;
 
 
