@@ -219,6 +219,47 @@ ALTER TABLE `usuario`
   ADD CONSTRAINT `fk_region_usuario` FOREIGN KEY (`region_usuario`) REFERENCES `region` (`id_region`);
 COMMIT;
 
+CREATE TABLE `boleta` (
+  `id_boleta` INT(11) NOT NULL,
+  `id_pedido` INT(11) NOT NULL,
+  `id_usuario` INT(11) NOT NULL,
+  `fecha_emision` TIMESTAMP NOT NULL DEFAULT current_timestamp(),
+  `total` INT(11) NOT NULL,
+  `estado` VARCHAR(50) DEFAULT 'EMITIDA'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `detalle_boleta` (
+  `id_detalle_boleta` INT(11) NOT NULL,
+  `id_boleta` INT(11) NOT NULL,
+  `id_producto` INT(11) NOT NULL,
+  `cantidad` INT(11) NOT NULL,
+  `precio_unitario` INT(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+ALTER TABLE `boleta`
+  ADD PRIMARY KEY (`id_boleta`),
+  ADD KEY `id_pedido` (`id_pedido`),
+  ADD KEY `id_usuario` (`id_usuario`);
+
+ALTER TABLE `detalle_boleta`
+  ADD PRIMARY KEY (`id_detalle_boleta`),
+  ADD KEY `id_boleta` (`id_boleta`),
+  ADD KEY `id_producto` (`id_producto`);
+
+ALTER TABLE `boleta`
+  MODIFY `id_boleta` INT(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `detalle_boleta`
+  MODIFY `id_detalle_boleta` INT(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `boleta`
+  ADD CONSTRAINT `boleta_ibfk_1` FOREIGN KEY (`id_pedido`) REFERENCES `pedido` (`id_pedido`),
+  ADD CONSTRAINT `boleta_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+
+ALTER TABLE `detalle_boleta`
+  ADD CONSTRAINT `detalle_boleta_ibfk_1` FOREIGN KEY (`id_boleta`) REFERENCES `boleta` (`id_boleta`),
+  ADD CONSTRAINT `detalle_boleta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
