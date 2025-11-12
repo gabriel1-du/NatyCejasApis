@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoUpdateDTO;
-import com.natycejas.GestionUsuariosApi.ExternalClientFolder.InventarioClient;
 import com.natycejas.GestionUsuariosApi.MapperFolder.CarritoProductoMapper;
 import com.natycejas.GestionUsuariosApi.ModelFolder.CarritoProducto;
 import com.natycejas.GestionUsuariosApi.RepositoryFolder.CarritoProductoRepository;
@@ -52,8 +51,7 @@ public class CarritoProductoServiceImpl implements CarritoProductoService{
         Optional<CarritoProducto> carritoProductoOpt = carritoProductoRepository.findById(id);
         if (carritoProductoOpt.isPresent()) {
             CarritoProducto carritoProducto = carritoProductoOpt.get();
-            Integer cantidadAnterior = carritoProducto.getCantidad();
-            Integer cantidadNueva = carritoProductoUpdateDTO.getCantidad();
+        
 
             carritoProductoMapper.updateEntityFromDTO(carritoProductoUpdateDTO, carritoProducto);
 

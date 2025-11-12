@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.natycejas.GestionUsuariosApi.DTOFolder.UsuarioDtosFolder.UsuarioCreateDTO;
@@ -29,6 +30,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     private RegionRepository regionRepository;
     @Autowired
     private ComunaRepository comunaRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper,
                               RegionRepository regionRepository, ComunaRepository comunaRepository) {
@@ -41,16 +44,26 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public UsuarioDTO crearUsuario(UsuarioCreateDTO usuarioCreateDTO) {
         Usuario usuario = usuarioMapper.toEntity(usuarioCreateDTO);
+
+        //Implementacion de hasheo de contraseñas
+        if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()) {
+            String hash = passwordEncoder.encode(usuario.getContrasena());
+            usuario.setContrasena(hash);
+        }
+
+        //Se asignan de región 
         if (usuarioCreateDTO.getIdRegion() != null) {
             Region region = regionRepository.findById(usuarioCreateDTO.getIdRegion())
                 .orElseThrow(() -> new RuntimeException("Región no encontrada con id " + usuarioCreateDTO.getIdRegion()));
             usuario.setRegion(region);
         }
+        //Asignacion de comuna
         if (usuarioCreateDTO.getIdComuna() != null) {
             Comuna comuna = comunaRepository.findById(usuarioCreateDTO.getIdComuna())
                 .orElseThrow(() -> new RuntimeException("Comuna no encontrada con id " + usuarioCreateDTO.getIdComuna()));
             usuario.setComuna(comuna);
         }
+        //Se guarda el usuario
         Usuario guardado = usuarioRepository.save(usuario);
         return usuarioMapper.toDTO(guardado);
     }
