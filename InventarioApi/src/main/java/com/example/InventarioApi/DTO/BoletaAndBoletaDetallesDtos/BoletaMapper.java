@@ -3,12 +3,15 @@ package com.example.InventarioApi.DTO.BoletaAndBoletaDetallesDtos;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
+
 import com.example.InventarioApi.Model.BoletaModelsFolder.Boleta;
 import com.example.InventarioApi.Model.BoletaModelsFolder.DetalleBoleta;
 
+@Component
 public class BoletaMapper {
 
-       public static Boleta toEntity(BoletaDTO dto) {
+       public Boleta toEntity(BoletaDTO dto) {
         Boleta boleta = new Boleta();
         boleta.setIdPedido(dto.getIdPedido());
         boleta.setIdUsuario(dto.getIdUsuario());

@@ -1,5 +1,6 @@
 package com.example.InventarioApi.Model.BoletaModelsFolder;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,6 +27,7 @@ public class DetalleBoleta {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_boleta", nullable = false)
+    @JsonBackReference
     private Boleta boleta; //Foreign Key to Boleta
 
     @Column(name = "id_producto", nullable = false)

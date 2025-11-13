@@ -3,8 +3,8 @@ package com.example.InventarioApi.Model.BoletaModelsFolder;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.hibernate.annotations.CascadeType;
-
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,7 +41,8 @@ public class Boleta {
     @Column(name = "estado")
     private String estado;
 
-    @OneToMany(mappedBy = "boleta",  orphanRemoval = true)
+    @OneToMany(mappedBy = "boleta", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<DetalleBoleta> detalles; //Foreign key hacia DetalleBoleta
 
 }
