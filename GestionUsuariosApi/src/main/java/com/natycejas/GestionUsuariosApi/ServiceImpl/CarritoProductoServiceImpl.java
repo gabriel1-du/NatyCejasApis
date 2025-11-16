@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoDTO;
-import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoLiteDTO;
+ 
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoUpdateDTO;
 import com.natycejas.GestionUsuariosApi.MapperFolder.CarritoProductoMapper;
 import com.natycejas.GestionUsuariosApi.ModelFolder.CarritoProducto;
@@ -41,9 +41,9 @@ public class CarritoProductoServiceImpl implements CarritoProductoService{
     }
 
     @Override
-    public List<CarritoProductoLiteDTO> listarPorCarritoId(Integer idCarrito) {
+    public List<CarritoProductoDTO> listarPorCarritoId(Integer idCarrito) {
         List<CarritoProducto> lista = carritoProductoRepository.findByCarrito_IdCarrito(idCarrito);
-        return lista.stream().map(carritoProductoMapper::toLiteDTO).collect(Collectors.toList());
+        return lista.stream().map(carritoProductoMapper::toDTO).collect(Collectors.toList());
     }
 
     @Override

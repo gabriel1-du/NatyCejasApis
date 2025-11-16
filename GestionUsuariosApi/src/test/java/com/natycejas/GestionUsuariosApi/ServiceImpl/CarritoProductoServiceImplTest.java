@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoDTO;
-import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoLiteDTO;
+ 
 import com.natycejas.GestionUsuariosApi.MapperFolder.CarritoProductoMapper;
 import com.natycejas.GestionUsuariosApi.ModelFolder.CarritoProducto;
 import com.natycejas.GestionUsuariosApi.RepositoryFolder.CarritoProductoRepository;
@@ -85,18 +85,14 @@ class CarritoProductoServiceImplTest {
     }
 
     @Test
-    void listarPorCarritoId_deberiaRetornarListaLiteDTO() {
+    void listarPorCarritoId_deberiaRetornarListaDTO() {
         when(carritoProductoRepository.findByCarrito_IdCarrito(1)).thenReturn(List.of(entityGuardado));
-        CarritoProductoLiteDTO lite = new CarritoProductoLiteDTO(100, 3, 1, 2);
-        when(carritoProductoMapper.toLiteDTO(entityGuardado)).thenReturn(lite);
+        when(carritoProductoMapper.toDTO(entityGuardado)).thenReturn(dto);
 
-        List<CarritoProductoLiteDTO> result = carritoProductoService.listarPorCarritoId(1);
+        List<CarritoProductoDTO> result = carritoProductoService.listarPorCarritoId(1);
         assertEquals(1, result.size());
-        assertEquals(100, result.get(0).getIdProducto());
-        assertEquals(3, result.get(0).getIdUsuario());
-        assertEquals(1, result.get(0).getIdCarrito());
-        assertEquals(2, result.get(0).getCantidad());
+        assertEquals(7, result.get(0).getIdCarritoProducto());
         verify(carritoProductoRepository).findByCarrito_IdCarrito(1);
-        verify(carritoProductoMapper).toLiteDTO(entityGuardado);
+        verify(carritoProductoMapper).toDTO(entityGuardado);
     }
 }
