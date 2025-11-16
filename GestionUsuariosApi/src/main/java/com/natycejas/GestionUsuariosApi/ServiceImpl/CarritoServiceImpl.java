@@ -38,6 +38,13 @@ public class CarritoServiceImpl implements CarritoService {
         return carritoMapper.toDTO(carrito);
     }
 
+    @Override
+    public CarritoDTO buscarPorUsuarioId(Integer idUsuario) {
+        Carrito carrito = carritoRepository.findByUsuarioId(idUsuario)
+                .orElseThrow(() -> new RuntimeException("Carrito no encontrado para usuario con ID: " + idUsuario));
+        return carritoMapper.toDTO(carrito);
+    }
+
     
     public CarritoDTO crear(CarritoCreateDTO carritoCreateDTO) {
         Carrito carrito = carritoMapper.toEntity(carritoCreateDTO);

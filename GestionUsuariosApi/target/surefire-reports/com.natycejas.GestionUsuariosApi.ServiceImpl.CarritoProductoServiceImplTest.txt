@@ -1,4 +1,14 @@
 -------------------------------------------------------------------------------
 Test set: com.natycejas.GestionUsuariosApi.ServiceImpl.CarritoProductoServiceImplTest
 -------------------------------------------------------------------------------
-Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.884 s -- in com.natycejas.GestionUsuariosApi.ServiceImpl.CarritoProductoServiceImplTest
+Tests run: 4, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 3.132 s <<< FAILURE! -- in com.natycejas.GestionUsuariosApi.ServiceImpl.CarritoProductoServiceImplTest
+com.natycejas.GestionUsuariosApi.ServiceImpl.CarritoProductoServiceImplTest.listarPorCarritoId_deberiaRetornarListaLiteDTO -- Time elapsed: 0.022 s <<< ERROR!
+java.lang.Error: 
+Unresolved compilation problem: 
+	The method listarPorCarritoId(Integer) from the type CarritoProductoServiceImpl refers to the missing type CarritoProductoLiteDTO
+
+	at com.natycejas.GestionUsuariosApi.ServiceImpl.CarritoProductoServiceImplTest.listarPorCarritoId_deberiaRetornarListaLiteDTO(CarritoProductoServiceImplTest.java:93)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+

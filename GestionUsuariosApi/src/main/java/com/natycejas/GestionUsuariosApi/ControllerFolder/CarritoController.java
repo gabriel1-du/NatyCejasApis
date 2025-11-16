@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/carritos")
 @Tag(name = "Carrito", description = "API para la gestión de carritos de compras. Permite crear, consultar, actualizar y eliminar carritos de usuarios.")
@@ -64,6 +66,24 @@ public class CarritoController {
             @Parameter(description = "ID único del carrito", required = true, example = "1")
             @PathVariable Integer id) {
         return ResponseEntity.ok(carritoService.buscarPorId(id));
+    }
+
+    @Operation(
+        summary = "Obtener carrito por ID de usuario",
+        description = "Recupera el carrito asociado al usuario mediante su ID."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Carrito encontrado exitosamente",
+                    content = @Content(mediaType = "application/json", 
+                                     schema = @Schema(implementation = CarritoDTO.class))),
+        @ApiResponse(responseCode = "404", description = "Carrito o usuario no encontrado",
+                    content = @Content)
+    })
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<CarritoDTO> obtenerPorUsuarioId(
+            @Parameter(description = "ID único del usuario", required = true, example = "1")
+            @PathVariable Integer idUsuario) {
+        return ResponseEntity.ok(carritoService.buscarPorUsuarioId(idUsuario));
     }
 
     @Operation(

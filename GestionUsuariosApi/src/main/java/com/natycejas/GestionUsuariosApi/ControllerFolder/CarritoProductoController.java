@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoUpdateDTO;
+import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoLiteDTO;
 import com.natycejas.GestionUsuariosApi.Service.CarritoProductoService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -46,6 +47,22 @@ public class CarritoProductoController {
     @GetMapping
     public ResponseEntity<List<CarritoProductoDTO>> listarTodosController() {
         return ResponseEntity.ok(carritoProductoService.listarTodos());
+    }
+
+    @Operation(
+        summary = "Listar productos por ID de carrito",
+        description = "Obtiene todos los productos asociados a un carrito específico por su ID."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Productos del carrito obtenidos exitosamente",
+                    content = @Content(mediaType = "application/json",
+                                     schema = @Schema(implementation = CarritoProductoDTO.class)))
+    })
+    @GetMapping("/carrito/{idCarrito}")
+    public ResponseEntity<List<CarritoProductoLiteDTO>> listarPorCarritoIdController(
+            @Parameter(description = "ID único del carrito", required = true, example = "1")
+            @PathVariable Integer idCarrito) {
+        return ResponseEntity.ok(carritoProductoService.listarPorCarritoId(idCarrito));
     }
 
     @Operation(

@@ -28,11 +28,13 @@ C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\RepositoryFolder\CarritoRepository.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\ModelFolder\Usuario.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\CarritoDtosFolder\CarritoUpdateDTO.java
+C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\CarritoProductoDtosFolder\CarritoProductoLiteDTO.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\MapperFolder\PedidoMapper.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\ControllerFolder\CarritoProductoController.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\ModelFolder\CarritoProducto.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\CheckoutDtosFolder\CheckoutItemDTO.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\PedidoDtosFolder\PedidoUpdateDTO.java
+C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\webConfig\SecurityConfig.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\DTOFolder\RegionDtosFolder\RegionCreateDTO.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\RepositoryFolder\ComunaRepository.java
 C:\Users\gabod\OneDrive\Escritorio\Api de NatyCejas\GestionUsuariosApi\src\main\java\com\natycejas\GestionUsuariosApi\ServiceImpl\UsuarioServiceImpl.java

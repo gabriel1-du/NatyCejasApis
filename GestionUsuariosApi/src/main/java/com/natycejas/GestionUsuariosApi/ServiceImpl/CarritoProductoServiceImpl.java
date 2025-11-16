@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoDTO;
+import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoLiteDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoUpdateDTO;
 import com.natycejas.GestionUsuariosApi.MapperFolder.CarritoProductoMapper;
 import com.natycejas.GestionUsuariosApi.ModelFolder.CarritoProducto;
@@ -37,6 +38,12 @@ public class CarritoProductoServiceImpl implements CarritoProductoService{
     public CarritoProductoDTO buscarPorId(Integer id) {
         Optional<CarritoProducto> carritoProductoOpt = carritoProductoRepository.findById(id);
         return carritoProductoOpt.map(carritoProductoMapper::toDTO).orElse(null);
+    }
+
+    @Override
+    public List<CarritoProductoLiteDTO> listarPorCarritoId(Integer idCarrito) {
+        List<CarritoProducto> lista = carritoProductoRepository.findByCarrito_IdCarrito(idCarrito);
+        return lista.stream().map(carritoProductoMapper::toLiteDTO).collect(Collectors.toList());
     }
 
     @Override

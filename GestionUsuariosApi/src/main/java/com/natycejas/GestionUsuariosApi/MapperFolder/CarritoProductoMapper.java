@@ -2,6 +2,7 @@ package com.natycejas.GestionUsuariosApi.MapperFolder;
 
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoDTO;
+import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoLiteDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.CarritoProductoDtosFolder.CarritoProductoUpdateDTO;
 import com.natycejas.GestionUsuariosApi.ModelFolder.Carrito;
 import com.natycejas.GestionUsuariosApi.ModelFolder.CarritoProducto;
@@ -35,6 +36,26 @@ public class CarritoProductoMapper {
         carritoProductoDTO.setCantidad(carritoProducto.getCantidad());
         
         return carritoProductoDTO;
+    }
+
+    public CarritoProductoLiteDTO toLiteDTO(CarritoProducto carritoProducto) {
+        if (carritoProducto == null) {
+            return null;
+        }
+        Integer idUsuario = null;
+        Integer idCarrito = null;
+        if (carritoProducto.getCarrito() != null) {
+            idCarrito = carritoProducto.getCarrito().getIdCarrito();
+            if (carritoProducto.getCarrito().getId_usuario() != null) {
+                idUsuario = carritoProducto.getCarrito().getId_usuario().getIdUsuario();
+            }
+        }
+        return new CarritoProductoLiteDTO(
+            carritoProducto.getIdProducto(),
+            idUsuario,
+            idCarrito,
+            carritoProducto.getCantidad()
+        );
     }
     
     public CarritoProducto toEntity(CarritoProductoCreateDTO carritoProductoCreateDTO) {

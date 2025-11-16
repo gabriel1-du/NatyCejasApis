@@ -79,6 +79,17 @@ class CarritoServiceImplTest {
     }
 
     @Test
+    void buscarPorUsuarioId_deberiaRetornarDTO() {
+        when(carritoRepository.findByUsuarioId(3)).thenReturn(Optional.of(carritoGuardado));
+        when(carritoMapper.toDTO(carritoGuardado)).thenReturn(carritoDTO);
+
+        CarritoDTO result = carritoService.buscarPorUsuarioId(3);
+        assertEquals(5, result.getIdCarrito());
+        verify(carritoRepository).findByUsuarioId(3);
+        verify(carritoMapper).toDTO(carritoGuardado);
+    }
+
+    @Test
     void listarTodos_deberiaRetornarListaDTO() {
         when(carritoRepository.findAll()).thenReturn(List.of(carritoGuardado));
         when(carritoMapper.toDTO(carritoGuardado)).thenReturn(carritoDTO);

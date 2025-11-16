@@ -11,6 +11,7 @@ public interface CarritoService {
 
     List<CarritoDTO> listarTodos();
     CarritoDTO buscarPorId(Integer id);
+    CarritoDTO buscarPorUsuarioId(Integer idUsuario);
     CarritoDTO crear(CarritoCreateDTO carritoCreateDTO);
     CarritoDTO actualizar(Integer id, CarritoUpdateDTO carritoUpdateDTO);
     void eliminar(Integer id);
