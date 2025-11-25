@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/proxy/usuarios")
 @RequiredArgsConstructor
-@Tag(name = "Usuarios Proxy")
+@Tag(name = "Usuarios Proxy", description = "Gateway: /api/proxy/usuarios → Backend: ${services.usuarios.base-url}${services.usuarios.base-path}")
 public class UsuarioProxyController {
 
     private final RestTemplate restTemplate;

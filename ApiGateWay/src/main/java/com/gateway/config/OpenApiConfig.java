@@ -62,4 +62,84 @@ public class OpenApiConfig {
                 .pathsToMatch("/api/proxy/inventario/**")
                 .build();
     }
+
+    @Bean
+    public GroupedOpenApi carritosGroup() {
+        return GroupedOpenApi.builder()
+                .group("carritos")
+                .pathsToMatch("/api/proxy/carritos/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi regionesGroup() {
+        return GroupedOpenApi.builder()
+                .group("regiones")
+                .pathsToMatch("/api/proxy/regiones/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi comunasGroup() {
+        return GroupedOpenApi.builder()
+                .group("comunas")
+                .pathsToMatch("/api/proxy/comunas/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi pedidosGroup() {
+        return GroupedOpenApi.builder()
+                .group("pedidos")
+                .pathsToMatch("/api/proxy/pedidos/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi inventarioBoletaGroup() {
+        return GroupedOpenApi.builder()
+                .group("inventario-boleta")
+                .pathsToMatch("/api/proxy/inventario/boleta/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi inventarioBoletaDetalleGroup() {
+        return GroupedOpenApi.builder()
+                .group("inventario-boleta-detalle")
+                .pathsToMatch("/api/proxy/inventario/boleta-detalle/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi inventarioProductosGroup() {
+        return GroupedOpenApi.builder()
+                .group("inventario-productos")
+                .pathsToMatch("/api/proxy/inventario/productos/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi inventarioMarcasGroup() {
+        return GroupedOpenApi.builder()
+                .group("inventario-marcas")
+                .pathsToMatch("/api/proxy/inventario/marcas/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi inventarioServiciosGroup() {
+        return GroupedOpenApi.builder()
+                .group("inventario-servicios")
+                .pathsToMatch("/api/proxy/inventario/servicios/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi inventarioCitasGroup() {
+        return GroupedOpenApi.builder()
+                .group("inventario-citas")
+                .pathsToMatch("/api/proxy/inventario/citas/**")
+                .build();
+    }
 }

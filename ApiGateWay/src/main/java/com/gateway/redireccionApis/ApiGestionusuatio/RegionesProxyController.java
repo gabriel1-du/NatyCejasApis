@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/proxy/regiones")
 @RequiredArgsConstructor
-@Tag(name = "Regiones Proxy")
+@Tag(name = "Regiones Proxy", description = "Gateway: /api/proxy/regiones → Backend: ${services.regiones.base-url}${services.regiones.base-path}")
 public class RegionesProxyController {
 
     private final RestTemplate restTemplate;
@@ -40,7 +40,12 @@ public class RegionesProxyController {
     private String regionesBasePath;
 
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.GET, RequestMethod.POST})
-    @Operation(summary = "Proxy Regiones (público)")
+    @Operation(
+        summary = "Proxy Regiones (público)",
+        description = "Alias del Gateway y destino en Backend:\n" +
+                      "- /api/proxy/regiones/** → ${services.regiones.base-path}/** en ${services.regiones.base-url}\n" +
+                      "Métodos permitidos: GET, POST."
+    )
     public ResponseEntity<?> proxyRegionesPublic(HttpServletRequest request,
                                                  @RequestBody(required = false) String body,
                                                  @RequestHeader HttpHeaders headers) {
@@ -48,7 +53,11 @@ public class RegionesProxyController {
     }
 
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.PUT, RequestMethod.DELETE})
-    @Operation(summary = "Proxy Regiones (seguro)")
+    @Operation(
+        summary = "Proxy Regiones (seguro)",
+        description = "PUT/DELETE requieren JWT (rol=admin). Alias:\n" +
+                      "- /api/proxy/regiones/** → ${services.regiones.base-path}/**"
+    )
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> proxyRegionesSecure(HttpServletRequest request,
                                                  @RequestBody(required = false) String body,

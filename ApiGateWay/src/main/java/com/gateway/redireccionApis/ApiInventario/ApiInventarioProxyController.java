@@ -19,7 +19,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RestController
 @RequestMapping("/api/proxy/inventario")
 @RequiredArgsConstructor
-@Tag(name = "Inventario Proxy")
+@Tag(name = "Inventario Proxy", description = "Gateway: /api/proxy/inventario → Backend: ${services.inventario.base-url}${services.inventario.base-path}; Aliases: /boleta → ${services.inventario.boleta-base-path}, /boleta-detalle → ${services.inventario.boleta-detalle-base-path}")
 public class ApiInventarioProxyController {
 
     private final RestTemplate restTemplate;
@@ -40,11 +40,12 @@ public class ApiInventarioProxyController {
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.GET, RequestMethod.POST})
     @Operation(
         summary = "Proxy Inventario (público)",
-        description = "Aliases del Gateway y su destino en ApiInventario:\n" +
+        description = "Gateway base: /api/proxy/inventario\n" +
+                      "Aliases y destino en Backend:\n" +
                       "- /api/proxy/inventario/boleta → /api/boletas\n" +
                       "- /api/proxy/inventario/boleta-detalle → /api/detalleboleta\n" +
                       "- /api/proxy/inventario/** → /inventario/**\n" +
-                      "Los segmentos adicionales del path se concatenan al destino correspondiente."
+                      "Métodos permitidos: GET, POST."
     )
     public ResponseEntity<?> proxyInventarioPublic(HttpServletRequest request,
                                                   @RequestBody(required = false) String body,
@@ -55,7 +56,7 @@ public class ApiInventarioProxyController {
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.PUT, RequestMethod.DELETE})
     @Operation(
         summary = "Proxy Inventario (seguro)",
-        description = "PUT/DELETE requieren JWT (rol=admin). Aliases y destino:\n" +
+        description = "PUT/DELETE requieren JWT (rol=admin). Alias y destino:\n" +
                       "- /api/proxy/inventario/boleta → /api/boletas\n" +
                       "- /api/proxy/inventario/boleta-detalle → /api/detalleboleta\n" +
                       "- /api/proxy/inventario/** → /inventario/**"
@@ -74,10 +75,60 @@ public class ApiInventarioProxyController {
         return handleProxy(request, null, headers);
     }
 
+    @PostMapping("/boleta")
+    @Operation(summary = "Inventario: Boletas (POST)", description = "Gateway: /api/proxy/inventario/boleta → Backend: /api/boletas")
+    public ResponseEntity<?> postBoletas(HttpServletRequest request,
+                                         @RequestBody(required = false) String body,
+                                         @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @PutMapping("/boleta/**")
+    @Operation(summary = "Inventario: Boletas (PUT)", description = "Gateway: /api/proxy/inventario/boleta/** → Backend: /api/boletas/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> putBoletas(HttpServletRequest request,
+                                        @RequestBody(required = false) String body,
+                                        @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @DeleteMapping("/boleta/**")
+    @Operation(summary = "Inventario: Boletas (DELETE)", description = "Gateway: /api/proxy/inventario/boleta/** → Backend: /api/boletas/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> deleteBoletas(HttpServletRequest request,
+                                           @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
     @GetMapping("/boleta-detalle")
     @Operation(summary = "Inventario: Detalle Boleta (GET)", description = "Gateway: /api/proxy/inventario/boleta-detalle → Backend: /api/detalleboleta")
     public ResponseEntity<?> getBoletasDetalle(HttpServletRequest request,
                                                @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
+    @PostMapping("/boleta-detalle")
+    @Operation(summary = "Inventario: Detalle Boleta (POST)", description = "Gateway: /api/proxy/inventario/boleta-detalle → Backend: /api/detalleboleta")
+    public ResponseEntity<?> postBoletasDetalle(HttpServletRequest request,
+                                                @RequestBody(required = false) String body,
+                                                @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @PutMapping("/boleta-detalle/**")
+    @Operation(summary = "Inventario: Detalle Boleta (PUT)", description = "Gateway: /api/proxy/inventario/boleta-detalle/** → Backend: /api/detalleboleta/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> putBoletasDetalle(HttpServletRequest request,
+                                               @RequestBody(required = false) String body,
+                                               @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @DeleteMapping("/boleta-detalle/**")
+    @Operation(summary = "Inventario: Detalle Boleta (DELETE)", description = "Gateway: /api/proxy/inventario/boleta-detalle/** → Backend: /api/detalleboleta/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> deleteBoletasDetalle(HttpServletRequest request,
+                                                  @RequestHeader HttpHeaders headers) {
         return handleProxy(request, null, headers);
     }
 
@@ -92,6 +143,127 @@ public class ApiInventarioProxyController {
     @Operation(summary = "Inventario: Producto por ID (GET)", description = "Gateway: /api/proxy/inventario/producto/{id} → Backend: /inventario/producto/{id}")
     public ResponseEntity<?> getProductoById(HttpServletRequest request,
                                              @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
+    @GetMapping("/marcas")
+    @Operation(summary = "Inventario: Marcas (GET)", description = "Gateway: /api/proxy/inventario/marcas → Backend: /inventario/marcas")
+    public ResponseEntity<?> getMarcas(HttpServletRequest request,
+                                       @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
+    @GetMapping("/servicios")
+    @Operation(summary = "Inventario: Servicios (GET)", description = "Gateway: /api/proxy/inventario/servicios → Backend: /inventario/servicios")
+    public ResponseEntity<?> getServicios(HttpServletRequest request,
+                                          @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
+    @GetMapping("/citas")
+    @Operation(summary = "Inventario: Citas (GET)", description = "Gateway: /api/proxy/inventario/citas → Backend: /inventario/citas")
+    public ResponseEntity<?> getCitas(HttpServletRequest request,
+                                      @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
+    @PostMapping("/productos")
+    @Operation(summary = "Inventario: Productos (POST)", description = "Gateway: /api/proxy/inventario/productos → Backend: /inventario/productos")
+    public ResponseEntity<?> postProductos(HttpServletRequest request,
+                                           @RequestBody(required = false) String body,
+                                           @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @PostMapping("/marcas")
+    @Operation(summary = "Inventario: Marcas (POST)", description = "Gateway: /api/proxy/inventario/marcas → Backend: /inventario/marcas")
+    public ResponseEntity<?> postMarcas(HttpServletRequest request,
+                                        @RequestBody(required = false) String body,
+                                        @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @PostMapping("/servicios")
+    @Operation(summary = "Inventario: Servicios (POST)", description = "Gateway: /api/proxy/inventario/servicios → Backend: /inventario/servicios")
+    public ResponseEntity<?> postServicios(HttpServletRequest request,
+                                           @RequestBody(required = false) String body,
+                                           @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @PostMapping("/citas")
+    @Operation(summary = "Inventario: Citas (POST)", description = "Gateway: /api/proxy/inventario/citas → Backend: /inventario/citas")
+    public ResponseEntity<?> postCitas(HttpServletRequest request,
+                                       @RequestBody(required = false) String body,
+                                       @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @PutMapping("/productos/**")
+    @Operation(summary = "Inventario: Productos (PUT)", description = "Gateway: /api/proxy/inventario/productos/** → Backend: /inventario/productos/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> putProductos(HttpServletRequest request,
+                                          @RequestBody(required = false) String body,
+                                          @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @DeleteMapping("/productos/**")
+    @Operation(summary = "Inventario: Productos (DELETE)", description = "Gateway: /api/proxy/inventario/productos/** → Backend: /inventario/productos/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> deleteProductos(HttpServletRequest request,
+                                             @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
+    @PutMapping("/marcas/**")
+    @Operation(summary = "Inventario: Marcas (PUT)", description = "Gateway: /api/proxy/inventario/marcas/** → Backend: /inventario/marcas/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> putMarcas(HttpServletRequest request,
+                                       @RequestBody(required = false) String body,
+                                       @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @DeleteMapping("/marcas/**")
+    @Operation(summary = "Inventario: Marcas (DELETE)", description = "Gateway: /api/proxy/inventario/marcas/** → Backend: /inventario/marcas/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> deleteMarcas(HttpServletRequest request,
+                                          @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
+    @PutMapping("/servicios/**")
+    @Operation(summary = "Inventario: Servicios (PUT)", description = "Gateway: /api/proxy/inventario/servicios/** → Backend: /inventario/servicios/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> putServicios(HttpServletRequest request,
+                                          @RequestBody(required = false) String body,
+                                          @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @DeleteMapping("/servicios/**")
+    @Operation(summary = "Inventario: Servicios (DELETE)", description = "Gateway: /api/proxy/inventario/servicios/** → Backend: /inventario/servicios/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> deleteServicios(HttpServletRequest request,
+                                             @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
+    @PutMapping("/citas/**")
+    @Operation(summary = "Inventario: Citas (PUT)", description = "Gateway: /api/proxy/inventario/citas/** → Backend: /inventario/citas/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> putCitas(HttpServletRequest request,
+                                      @RequestBody(required = false) String body,
+                                      @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @DeleteMapping("/citas/**")
+    @Operation(summary = "Inventario: Citas (DELETE)", description = "Gateway: /api/proxy/inventario/citas/** → Backend: /inventario/citas/**")
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<?> deleteCitas(HttpServletRequest request,
+                                         @RequestHeader HttpHeaders headers) {
         return handleProxy(request, null, headers);
     }
 

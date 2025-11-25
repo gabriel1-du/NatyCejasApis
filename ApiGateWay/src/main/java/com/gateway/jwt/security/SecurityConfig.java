@@ -59,10 +59,10 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, ApiInventarioPublicRoutes.INVENTARIO_PUBLIC_GET).permitAll()
 
                 // — RUTAS PÚBLICAS SWAGGER/OPENAPI —
-                .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
-                .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/v3/api-docs").permitAll()
-                .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
+                .requestMatchers("/swagger-ui.html").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/v3/api-docs").permitAll()
+                .requestMatchers("/v3/api-docs/**").permitAll()
 
 
 

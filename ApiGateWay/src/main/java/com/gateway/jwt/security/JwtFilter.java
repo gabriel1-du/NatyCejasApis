@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter  {
         boolean isPublicPost = "POST".equalsIgnoreCase(method) &&
                                 Arrays.stream(PUBLIC_POST).anyMatch(path::equals);
 
-        if (isPublicGet || isPublicPost) {
+        if (isPublicGet || isPublicPost || path.startsWith("/swagger-ui") || path.startsWith("/v3/api-docs")) {
             // Si es ruta pública, la dejamos pasar sin intentar validar JWT
             filterChain.doFilter(request, response);
             return;

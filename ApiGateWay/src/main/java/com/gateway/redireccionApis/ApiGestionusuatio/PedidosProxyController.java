@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/proxy/pedidos")
 @RequiredArgsConstructor
-@Tag(name = "Pedidos Proxy")
+@Tag(name = "Pedidos Proxy", description = "Gateway: /api/proxy/pedidos → Backend: ${services.pedidos.base-url}${services.pedidos.base-path}")
 public class PedidosProxyController {
 
     private final RestTemplate restTemplate;
@@ -40,7 +40,12 @@ public class PedidosProxyController {
     private String pedidosBasePath;
 
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.GET, RequestMethod.POST})
-    @Operation(summary = "Proxy Pedidos (público)")
+    @Operation(
+        summary = "Proxy Pedidos (público)",
+        description = "Alias del Gateway y destino en Backend:\n" +
+                      "- /api/proxy/pedidos/** → ${services.pedidos.base-path}/** en ${services.pedidos.base-url}\n" +
+                      "Métodos permitidos: GET, POST."
+    )
     public ResponseEntity<?> proxyPedidosPublic(HttpServletRequest request,
                                                 @RequestBody(required = false) String body,
                                                 @RequestHeader HttpHeaders headers) {
@@ -48,7 +53,11 @@ public class PedidosProxyController {
     }
 
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.PUT, RequestMethod.DELETE})
-    @Operation(summary = "Proxy Pedidos (seguro)")
+    @Operation(
+        summary = "Proxy Pedidos (seguro)",
+        description = "PUT/DELETE requieren JWT (rol=admin). Alias:\n" +
+                      "- /api/proxy/pedidos/** → ${services.pedidos.base-path}/**"
+    )
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> proxyPedidosSecure(HttpServletRequest request,
                                                 @RequestBody(required = false) String body,

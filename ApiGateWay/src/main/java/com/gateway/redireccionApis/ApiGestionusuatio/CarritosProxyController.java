@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/proxy/carritos")
 @RequiredArgsConstructor
-@Tag(name = "Carritos Proxy")
+@Tag(name = "Carritos Proxy", description = "Gateway: /api/proxy/carritos → Backend: ${services.carritos.base-url}${services.carritos.base-path}")
 public class CarritosProxyController {
 
     private final RestTemplate restTemplate;
@@ -40,7 +40,12 @@ public class CarritosProxyController {
     private String carritosBasePath;
 
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.GET, RequestMethod.POST})
-    @Operation(summary = "Proxy Carritos (público)")
+    @Operation(
+        summary = "Proxy Carritos (público)",
+        description = "Alias del Gateway y destino en Backend:\n" +
+                      "- /api/proxy/carritos/** → ${services.carritos.base-path}/** en ${services.carritos.base-url}\n" +
+                      "Métodos permitidos: GET, POST."
+    )
     public ResponseEntity<?> proxyCarritosPublic(HttpServletRequest request,
                                                  @RequestBody(required = false) String body,
                                                  @RequestHeader HttpHeaders headers) {
@@ -48,7 +53,11 @@ public class CarritosProxyController {
     }
 
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.PUT, RequestMethod.DELETE})
-    @Operation(summary = "Proxy Carritos (seguro)")
+    @Operation(
+        summary = "Proxy Carritos (seguro)",
+        description = "PUT/DELETE requieren JWT (rol=admin). Alias:\n" +
+                      "- /api/proxy/carritos/** → ${services.carritos.base-path}/**"
+    )
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<?> proxyCarritosSecure(HttpServletRequest request,
                                                  @RequestBody(required = false) String body,
