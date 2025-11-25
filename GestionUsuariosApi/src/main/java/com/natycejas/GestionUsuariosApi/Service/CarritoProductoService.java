@@ -30,4 +30,7 @@ public interface CarritoProductoService {
     // Eliminar un producto del carrito
     void eliminar(Integer id);
 
+    // Eliminar en cascada todo lo asociado a un carrito
+    void eliminarPorCarritoId(Integer idCarrito);
+
 }

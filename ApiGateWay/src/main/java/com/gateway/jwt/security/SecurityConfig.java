@@ -18,7 +18,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.http.HttpMethod; // Asegúrate de importar esto arriba
 
 import static com.gateway.jwt.security.PublicRoutes.*; //importa las rutas publicas de jwt
-import static com.gateway.redireccionApis.Usuario.UsuarioPublicRoutes.USUARIO_PUBLIC_GET; //Importa las rutas publicas de usuario
+import static com.gateway.redireccionApis.ApiGestionusuatio.UsuarioPublicRoutes.USUARIO_PUBLIC_GET; //Importa las rutas publicas de usuario
+import static com.gateway.redireccionApis.ApiGestionusuatio.RegionesPublicRoutes.REGIONES_PUBLIC_GET;
+import static com.gateway.redireccionApis.ApiGestionusuatio.PedidosPublicRoutes.PEDIDOS_PUBLIC_GET;
+import static com.gateway.redireccionApis.ApiGestionusuatio.ComunasPublicRoutes.COMUNAS_PUBLIC_GET;
+import static com.gateway.redireccionApis.ApiGestionusuatio.CarritosPublicRoutes.CARRITOS_PUBLIC_GET;
 
 
 @Configuration
@@ -39,6 +43,10 @@ public class SecurityConfig {
 
                 // URL públicas API Gestion
                 .requestMatchers(HttpMethod.GET, USUARIO_PUBLIC_GET).permitAll()   // lista pública api GESTION GET
+                .requestMatchers(HttpMethod.GET, REGIONES_PUBLIC_GET).permitAll()
+                .requestMatchers(HttpMethod.GET, PEDIDOS_PUBLIC_GET).permitAll()
+                .requestMatchers(HttpMethod.GET, COMUNAS_PUBLIC_GET).permitAll()
+                .requestMatchers(HttpMethod.GET, CARRITOS_PUBLIC_GET).permitAll()
                 
 
                 // — RUTAS PÚBLICAS DE CARRITO (GET) — 

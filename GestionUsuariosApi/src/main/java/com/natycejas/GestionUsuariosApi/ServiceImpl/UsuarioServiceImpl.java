@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.natycejas.GestionUsuariosApi.DTOFolder.UsuarioDtosFolder.UsuarioCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.UsuarioDtosFolder.UsuarioDTO;
@@ -17,6 +18,9 @@ import com.natycejas.GestionUsuariosApi.ModelFolder.Comuna;
 import com.natycejas.GestionUsuariosApi.RepositoryFolder.UsuarioRepository;
 import com.natycejas.GestionUsuariosApi.RepositoryFolder.RegionRepository;
 import com.natycejas.GestionUsuariosApi.RepositoryFolder.ComunaRepository;
+import com.natycejas.GestionUsuariosApi.RepositoryFolder.CarritoRepository;
+import com.natycejas.GestionUsuariosApi.RepositoryFolder.PedidoRepository;
+import com.natycejas.GestionUsuariosApi.RepositoryFolder.CarritoProductoRepository;
 import com.natycejas.GestionUsuariosApi.Service.UsuarioService;
 
 @Service
@@ -32,6 +36,12 @@ public class UsuarioServiceImpl implements UsuarioService {
     private ComunaRepository comunaRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private CarritoRepository carritoRepository;
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    @Autowired
+    private CarritoProductoRepository carritoProductoRepository;
 
     public UsuarioServiceImpl(UsuarioRepository usuarioRepository, UsuarioMapper usuarioMapper,
                               RegionRepository regionRepository, ComunaRepository comunaRepository) {
@@ -107,10 +117,20 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
+    @Transactional
     public void eliminarUsuario(Integer id) {
         if (!usuarioRepository.existsById(id)) {
             throw new RuntimeException("Usuario no encontrado con id " + id);
         }
+
+        carritoRepository.findByUsuarioId(id).ifPresent(carrito -> {
+            Integer idCarrito = carrito.getIdCarrito();
+            pedidoRepository.deleteBoletasByCarritoId(idCarrito);
+            carritoProductoRepository.deleteByCarrito_IdCarrito(idCarrito);
+            pedidoRepository.deleteByCarrito_IdCarrito(idCarrito);
+            carritoRepository.deleteById(idCarrito);
+        });
+        usuarioRepository.deleteBoletaByUsuarioId(id);
         usuarioRepository.deleteById(id);
     }
 

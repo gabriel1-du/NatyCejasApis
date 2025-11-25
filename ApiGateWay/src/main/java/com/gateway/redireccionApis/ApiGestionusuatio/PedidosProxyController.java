@@ -1,4 +1,4 @@
-package com.gateway.redireccionApis.Usuario;
+package com.gateway.redireccionApis.ApiGestionusuatio;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,52 +25,51 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/proxy/usuarios")
+@RequestMapping("/api/proxy/pedidos")
 @RequiredArgsConstructor
-@Tag(name = "Usuarios Proxy")
-public class UsuarioProxyController {
+@Tag(name = "Pedidos Proxy")
+public class PedidosProxyController {
 
     private final RestTemplate restTemplate;
     private final JwtService jwtService;
 
-    @Value("${services.usuarios.base-url}")
-    private String usuariosBaseUrl;
+    @Value("${services.pedidos.base-url}")
+    private String pedidosBaseUrl;
 
-    @Value("${services.usuarios.base-path}")
-    private String usuariosBasePath;
+    @Value("${services.pedidos.base-path}")
+    private String pedidosBasePath;
 
-    @RequestMapping(value = "/**", method = {RequestMethod.GET, RequestMethod.POST})
-    @Operation(
-        summary = "Proxy Usuarios (público)",
-        description = "Alias del Gateway: /api/proxy/usuarios/** → destino: ${services.usuarios.base-path}/** en ${services.usuarios.base-url}.\n" +
-                      "Los segmentos del path se mantienen y los headers se propagan."
-    )
-    public ResponseEntity<?> proxyUsuariosPublic(HttpServletRequest request,
-                                                 @RequestBody(required = false) String body,
-                                                 @RequestHeader HttpHeaders headers) {
+    @RequestMapping(value = {"", "/**"}, method = {RequestMethod.GET, RequestMethod.POST})
+    @Operation(summary = "Proxy Pedidos (público)")
+    public ResponseEntity<?> proxyPedidosPublic(HttpServletRequest request,
+                                                @RequestBody(required = false) String body,
+                                                @RequestHeader HttpHeaders headers) {
         return handleProxy(request, body, headers);
     }
 
-    @RequestMapping(value = "/**", method = {RequestMethod.PUT, RequestMethod.DELETE})
-    @Operation(
-        summary = "Proxy Usuarios (seguro)",
-        description = "PUT/DELETE requieren JWT (rol=admin). Alias: /api/proxy/usuarios/** → ${services.usuarios.base-path}/**"
-    )
+    @RequestMapping(value = {"", "/**"}, method = {RequestMethod.PUT, RequestMethod.DELETE})
+    @Operation(summary = "Proxy Pedidos (seguro)")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<?> proxyUsuariosSecure(HttpServletRequest request,
-                                                 @RequestBody(required = false) String body,
-                                                 @RequestHeader HttpHeaders headers) {
+    public ResponseEntity<?> proxyPedidosSecure(HttpServletRequest request,
+                                                @RequestBody(required = false) String body,
+                                                @RequestHeader HttpHeaders headers) {
         return handleProxy(request, body, headers);
     }
 
     private ResponseEntity<?> handleProxy(HttpServletRequest request, String body, HttpHeaders headers) {
+        String originalPath = request.getRequestURI().replace("/api/proxy/pedidos", "");
 
-        String originalPath = request.getRequestURI().replace("/api/proxy/usuarios", "");
-        String targetUrl = usuariosBaseUrl + usuariosBasePath + originalPath;
-        System.out.println("➡️ USUARIOS targetUrl: " + targetUrl);
+        String targetUrl = org.springframework.web.util.UriComponentsBuilder
+                .fromHttpUrl(pedidosBaseUrl)
+                .path(pedidosBasePath)
+                .path(originalPath)
+                .build(true)
+                .toUriString();
+
         HttpMethod method = HttpMethod.valueOf(request.getMethod());
+        System.out.println("➡️ PEDIDOS targetUrl: " + targetUrl + "  METHOD: " + method);
 
-        if (method == HttpMethod.DELETE) {
+        if (method == HttpMethod.DELETE || method == HttpMethod.PUT) {
             String authHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -79,30 +78,16 @@ public class UsuarioProxyController {
             }
 
             String token = authHeader.replace("Bearer ", "");
-            String rol = jwtService.extractClaim(token, claims -> claims.get("rol", String.class));
+            String rol = jwtService.extractClaim(token, claims -> {
+                String r = claims.get("rol", String.class);
+                if (r == null) r = claims.get("role", String.class);
+                return r;
+            });
 
             if (!"admin".equalsIgnoreCase(rol)) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .body("{\"error\": \"Solo admin puede eliminar usuarios\"}");
-            }
-        }
-
-        if (method == HttpMethod.PUT) {
-            String authHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body("{\"error\": \"Token no presente o inválido\"}");
-            }
-
-            String token = authHeader.replace("Bearer ", "");
-            String rol = jwtService.extractClaim(token, claims -> claims.get("rol", String.class));
-
-            if (!"admin".equalsIgnoreCase(rol)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body("{\"error\": \"Solo admin puede actualizar usuarios\"}");
+                        .body("{\"error\": \"Operación restringida a admin\"}");
             }
         }
 
@@ -121,17 +106,14 @@ public class UsuarioProxyController {
             return ResponseEntity.status(response.getStatusCode())
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(response.getBody());
-
         } catch (HttpClientErrorException | HttpServerErrorException ex) {
             return ResponseEntity.status(ex.getStatusCode())
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(ex.getResponseBodyAsString());
-
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body("{\"error\": \"Error inesperado en el API Gateway\", \"detalle\": \"" + ex.getMessage() + "\"}");
         }
     }
-
 }
