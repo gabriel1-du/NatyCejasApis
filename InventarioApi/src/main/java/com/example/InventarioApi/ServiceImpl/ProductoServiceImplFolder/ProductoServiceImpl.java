@@ -57,17 +57,19 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     public void eliminarProducto(Integer id) {
-        // Intentar eliminar la imagen asociada antes de eliminar el producto
         Optional<Producto> productoOpt = productoRepository.findById(id);
         productoOpt.ifPresent(p -> {
             String ruta = p.getFoto_url();
             if (ruta != null && !ruta.isBlank()) {
-                try {
-                    Path path = Paths.get(ruta);
-                    if (Files.exists(path)) {
-                        Files.delete(path);
-                    }
-                } catch (IOException ignored) {}
+                boolean esUrl = ruta.startsWith("http://") || ruta.startsWith("https://") || ruta.startsWith("ftp://");
+                if (!esUrl) {
+                    try {
+                        Path path = Paths.get(ruta);
+                        if (Files.exists(path)) {
+                            Files.delete(path);
+                        }
+                    } catch (Exception ignored) {}
+                }
             }
         });
         productoRepository.deleteById(id);
