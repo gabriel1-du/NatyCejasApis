@@ -47,6 +47,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, PEDIDOS_PUBLIC_GET).permitAll()
                 .requestMatchers(HttpMethod.GET, COMUNAS_PUBLIC_GET).permitAll()
                 .requestMatchers(HttpMethod.GET, CARRITOS_PUBLIC_GET).permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/proxy/carritos/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/proxy/carritos/**").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/api/proxy/carritos/carrito-producto/**").permitAll()
                 
 
                 // — RUTAS PÚBLICAS DE CARRITO (GET) — 

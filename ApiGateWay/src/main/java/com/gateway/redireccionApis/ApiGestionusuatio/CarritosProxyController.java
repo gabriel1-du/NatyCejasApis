@@ -39,6 +39,9 @@ public class CarritosProxyController {
     @Value("${services.carritos.base-path}")
     private String carritosBasePath;
 
+    @Value("${services.carritos.carrito-producto-base-path:/api/carrito-producto}")
+    private String carritoProductoBasePath;
+
     @RequestMapping(value = {"", "/**"}, method = {RequestMethod.GET, RequestMethod.POST})
     @Operation(
         summary = "Proxy Carritos (público)",
@@ -68,10 +71,20 @@ public class CarritosProxyController {
     private ResponseEntity<?> handleProxy(HttpServletRequest request, String body, HttpHeaders headers) {
         String originalPath = request.getRequestURI().replace("/api/proxy/carritos", "");
 
+        String effectiveBasePath;
+        String pathRemainder;
+        if (originalPath.startsWith("/carrito-producto")) {
+            effectiveBasePath = carritoProductoBasePath;
+            pathRemainder = originalPath.replaceFirst("^/carrito-producto", "");
+        } else {
+            effectiveBasePath = carritosBasePath;
+            pathRemainder = originalPath;
+        }
+
         String targetUrl = org.springframework.web.util.UriComponentsBuilder
                 .fromHttpUrl(carritosBaseUrl)
-                .path(carritosBasePath)
-                .path(originalPath)
+                .path(effectiveBasePath)
+                .path(pathRemainder)
                 .build(true)
                 .toUriString();
 
@@ -79,30 +92,35 @@ public class CarritosProxyController {
         System.out.println("➡️ CARITOS targetUrl: " + targetUrl + "  METHOD: " + method);
 
         if (method == HttpMethod.DELETE || method == HttpMethod.PUT) {
-            String authHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
-            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body("{\"error\": \"Token no presente o inválido\"}");
-            }
+            if (!originalPath.startsWith("/carrito-producto")) {
+                String authHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
+                if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .body("{\"error\": \"Token no presente o inválido\"}");
+                }
 
-            String token = authHeader.replace("Bearer ", "");
-            String rol = jwtService.extractClaim(token, claims -> {
-                String r = claims.get("rol", String.class);
-                if (r == null) r = claims.get("role", String.class);
-                return r;
-            });
+                String token = authHeader.replace("Bearer ", "");
+                String rol = jwtService.extractClaim(token, claims -> {
+                    String r = claims.get("rol", String.class);
+                    if (r == null) r = claims.get("role", String.class);
+                    return r;
+                });
 
-            if (!"admin".equalsIgnoreCase(rol)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body("{\"error\": \"Operación restringida a admin\"}");
+                if (!"admin".equalsIgnoreCase(rol)) {
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .body("{\"error\": \"Operación restringida a admin\"}");
+                }
             }
         }
 
         HttpHeaders cleanHeaders = new HttpHeaders();
         headers.forEach((key, value) -> {
             if (!key.equalsIgnoreCase(HttpHeaders.CONTENT_LENGTH)) {
+                if (method == HttpMethod.GET && key.equalsIgnoreCase(HttpHeaders.AUTHORIZATION)) {
+                    return; // no propagar Authorization en GET
+                }
                 cleanHeaders.put(key, value);
             }
         });
