@@ -107,11 +107,26 @@ public class ApiInventarioProxyController {
         return handleProxy(request, null, headers);
     }
 
+    @GetMapping("/boleta-detalle/**")
+    @Operation(summary = "Inventario: Detalle Boleta (GET)", description = "Gateway: /api/proxy/inventario/boleta-detalle/** → Backend: /api/detalleboleta/**")
+    public ResponseEntity<?> getBoletasDetalleWildcard(HttpServletRequest request,
+                                                       @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, null, headers);
+    }
+
     @PostMapping("/boleta-detalle")
     @Operation(summary = "Inventario: Detalle Boleta (POST)", description = "Gateway: /api/proxy/inventario/boleta-detalle → Backend: /api/detalleboleta")
     public ResponseEntity<?> postBoletasDetalle(HttpServletRequest request,
                                                 @RequestBody(required = false) String body,
                                                 @RequestHeader HttpHeaders headers) {
+        return handleProxy(request, body, headers);
+    }
+
+    @PostMapping("/boleta-detalle/**")
+    @Operation(summary = "Inventario: Detalle Boleta (POST)", description = "Gateway: /api/proxy/inventario/boleta-detalle/** → Backend: /api/detalleboleta/**")
+    public ResponseEntity<?> postBoletasDetalleWildcard(HttpServletRequest request,
+                                                        @RequestBody(required = false) String body,
+                                                        @RequestHeader HttpHeaders headers) {
         return handleProxy(request, body, headers);
     }
 
@@ -271,15 +286,23 @@ public class ApiInventarioProxyController {
         String originalPath = request.getRequestURI().replace("/api/proxy/inventario", "");
         String effectiveBasePath;
         String pathRemainder;
-        if (originalPath.startsWith("/boleta")) {
+        if (originalPath.startsWith("/boleta-detalle")
+                || originalPath.startsWith("/boletadetalle")
+                || originalPath.startsWith("/boletas-detalle")) {
+            effectiveBasePath = boletaDetalleBasePath;
+            pathRemainder = originalPath
+                    .replaceFirst("^/boleta-detalle", "")
+                    .replaceFirst("^/boletadetalle", "")
+                    .replaceFirst("^/boletas-detalle", "");
+        } else if (originalPath.startsWith("/boleta")) {
             effectiveBasePath = boletaBasePath;
             pathRemainder = originalPath.replaceFirst("^/boleta", "");
-        } else if (originalPath.startsWith("/boleta-detalle")) {
-            effectiveBasePath = boletaDetalleBasePath;
-            pathRemainder = originalPath.replaceFirst("^/boleta-detalle", "");
         } else {
             effectiveBasePath = (inventarioBasePath == null ? "" : inventarioBasePath);
             pathRemainder = originalPath;
+        }
+        if ("/".equals(pathRemainder)) {
+            pathRemainder = "";
         }
         String targetUrl = UriComponentsBuilder
                 .fromHttpUrl(inventarioBaseUrl)

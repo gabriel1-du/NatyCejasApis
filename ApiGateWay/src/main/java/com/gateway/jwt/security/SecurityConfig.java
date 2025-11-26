@@ -45,6 +45,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, USUARIO_PUBLIC_GET).permitAll()   // lista pública api GESTION GET
                 .requestMatchers(HttpMethod.GET, REGIONES_PUBLIC_GET).permitAll()
                 .requestMatchers(HttpMethod.GET, PEDIDOS_PUBLIC_GET).permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/proxy/pedidos/**").permitAll()
                 .requestMatchers(HttpMethod.GET, COMUNAS_PUBLIC_GET).permitAll()
                 .requestMatchers(HttpMethod.GET, CARRITOS_PUBLIC_GET).permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/proxy/carritos/**").permitAll()
@@ -57,6 +58,11 @@ public class SecurityConfig {
                 // — RUTAS PÚBLICAS INVENTARIO/BOLETA (GET)
                 .requestMatchers(HttpMethod.GET, com.gateway.redireccionApis.ApiInventario.Boleta.BoletaPublicRoutes.BOLETA_PUBLIC_GET).permitAll()
                 .requestMatchers(HttpMethod.GET, com.gateway.redireccionApis.ApiInventario.BoletaDetalle.BoletaDetallePublicRoutes.BOLETA_DETALLE_PUBLIC_GET).permitAll()
+                // — RUTAS PÚBLICAS INVENTARIO/BOLETA (POST)
+                .requestMatchers(HttpMethod.POST, "/api/proxy/inventario/boleta").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/proxy/inventario/boleta/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/proxy/inventario/boleta-detalle").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/proxy/inventario/boleta-detalle/**").permitAll()
 
                 // - RUTAS PUBLICAS DE INVENTARIO (GET)
                 .requestMatchers(HttpMethod.GET, ApiInventarioPublicRoutes.INVENTARIO_PUBLIC_GET).permitAll()
