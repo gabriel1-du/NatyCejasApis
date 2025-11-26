@@ -43,6 +43,7 @@ public class SecurityConfig {
 
                 // URL públicas API Gestion
                 .requestMatchers(HttpMethod.GET, USUARIO_PUBLIC_GET).permitAll()   // lista pública api GESTION GET
+                .requestMatchers(HttpMethod.POST, "/api/proxy/usuarios/**").permitAll()
                 .requestMatchers(HttpMethod.GET, REGIONES_PUBLIC_GET).permitAll()
                 .requestMatchers(HttpMethod.GET, PEDIDOS_PUBLIC_GET).permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/proxy/pedidos/**").permitAll()
@@ -51,6 +52,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/proxy/carritos/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/proxy/carritos/**").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/api/proxy/carritos/carrito-producto/**").permitAll()
+                .requestMatchers(HttpMethod.DELETE, "/api/proxy/carritos/carrito-producto/**").permitAll()
                 
 
                 // — RUTAS PÚBLICAS DE CARRITO (GET) — 
