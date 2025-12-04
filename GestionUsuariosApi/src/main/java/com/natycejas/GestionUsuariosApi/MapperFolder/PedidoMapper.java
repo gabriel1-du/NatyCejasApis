@@ -26,7 +26,8 @@ public class PedidoMapper {
                 carritoMapper.toDTO(pedido.getCarrito()), // Convierte carrito a DTO
                 pedido.getFecha(),
                 pedido.getTotal(),
-                pedido.getEstado()
+                pedido.getEstado(),
+                pedido.getIdBoleta()
         );
     }
 
@@ -38,6 +39,7 @@ public class PedidoMapper {
         pedido.setCarrito(carrito);
         pedido.setTotal(pedidoCreateDTO.getTotal());
         pedido.setEstado("PAGADO");
+        pedido.setIdBoleta(pedidoCreateDTO.getIdBoleta());
         pedido.setFecha(java.time.LocalDateTime.now());
         return pedido;
     }

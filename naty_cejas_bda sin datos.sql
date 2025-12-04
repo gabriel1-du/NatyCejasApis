@@ -260,6 +260,10 @@ ALTER TABLE `detalle_boleta`
   ADD CONSTRAINT `detalle_boleta_ibfk_1` FOREIGN KEY (`id_boleta`) REFERENCES `boleta` (`id_boleta`),
   ADD CONSTRAINT `detalle_boleta_ibfk_2` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`);
 
+ALTER TABLE `pedido`
+  ADD COLUMN `id_boleta` int(11) DEFAULT NULL,
+  ADD CONSTRAINT `fk_pedido_boleta` FOREIGN KEY (`id_boleta`) REFERENCES `boleta` (`id_boleta`);
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

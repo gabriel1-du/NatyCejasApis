@@ -16,4 +16,5 @@ public class PedidoDTO {
     private LocalDateTime fecha;
     private Integer total;
     private String estado;
+    private Integer idBoleta;
 }

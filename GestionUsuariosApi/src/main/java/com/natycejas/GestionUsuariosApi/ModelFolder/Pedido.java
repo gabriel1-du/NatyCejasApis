@@ -30,4 +30,7 @@ public class Pedido {
     
     @Column(name = "estado")
     private String estado = "PAGADO";
+
+    @Column(name = "id_boleta")
+    private Integer idBoleta;
 }

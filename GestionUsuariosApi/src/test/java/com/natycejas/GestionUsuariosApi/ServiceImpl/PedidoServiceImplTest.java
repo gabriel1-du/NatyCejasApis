@@ -43,7 +43,7 @@ class PedidoServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        createDTO = new PedidoCreateDTO(5, 3);
+        createDTO = new PedidoCreateDTO(5, 3, null);
         carrito = new Carrito();
         carrito.setIdCarrito(5);
         pedidoEntity = new Pedido();
@@ -51,7 +51,7 @@ class PedidoServiceImplTest {
         pedidoGuardado.setIdPedido(99);
         pedidoGuardado.setCarrito(carrito);
         pedidoGuardado.setTotal(3);
-        pedidoDTO = new PedidoDTO(99, null, pedidoGuardado.getFecha(), 3, "PAGADO");
+        pedidoDTO = new PedidoDTO(99, null, pedidoGuardado.getFecha(), 3, "PAGADO", null);
     }
 
     @Test
