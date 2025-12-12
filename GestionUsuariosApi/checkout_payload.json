@@ -1,8 +1,0 @@
-{
-  "runUsuario": "99.999.999-9",
-  "items": [
-    { "idProducto": 1, "cantidad": 2 },
-    { "idProducto": 1, "cantidad": 1 },
-    { "idProducto": 2, "cantidad": 1 }
-  ]
-}
