@@ -71,7 +71,23 @@ class PedidoServiceImplTest {
         verify(pedidoRepository).save(pedidoEntity);
         verify(pedidoMapper).toDTO(pedidoGuardado);
     }
-<<<<<<< HEAD
+
+    @Test
+    void actualizarPedido_deberiaActualizarYRetornarDTO() {
+        Integer id = 99;
+        PedidoUpdateDTO updateDTO = new PedidoUpdateDTO("ENVIADO", 123);
+        
+        when(pedidoRepository.findById(id)).thenReturn(Optional.of(pedidoGuardado));
+        when(pedidoRepository.save(pedidoGuardado)).thenReturn(pedidoGuardado);
+        when(pedidoMapper.toDTO(pedidoGuardado)).thenReturn(pedidoDTO);
+        
+        PedidoDTO result = pedidoService.actualizarPedido(id, updateDTO);
+        
+        assertNotNull(result);
+        verify(pedidoRepository).findById(id);
+        verify(pedidoMapper).updateEntityFromDTO(updateDTO, pedidoGuardado);
+        verify(pedidoRepository).save(pedidoGuardado);
+    }
 }
 =======
 
