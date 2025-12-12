@@ -12,6 +12,7 @@ public class PublicRoutes {
     public static final String[] PUBLIC_POST = {
         "/api/auth/login",
         "/api/auth/gateway/login",
+        "/api/proxy/usuarios",
         // puedes agregar otras si es necesario
     };
 
