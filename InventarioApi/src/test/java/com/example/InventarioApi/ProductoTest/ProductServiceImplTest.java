@@ -1,0 +1,93 @@
+package com.example.InventarioApi.ProductoTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
+import com.example.InventarioApi.DTO.ProductoDTOs.CreateProductoDTO;
+import com.example.InventarioApi.DTO.ProductoDTOs.ProductoDTO;
+import com.example.InventarioApi.Model.Marca;
+import com.example.InventarioApi.Model.ProductoModelsFolder.CategoriaProducto;
+import com.example.InventarioApi.Model.ProductoModelsFolder.Producto;
+import com.example.InventarioApi.Repository.MarcaRepository;
+import com.example.InventarioApi.Repository.ProductoRepositoriesFolder.CategoriaProductoRepository;
+import com.example.InventarioApi.Repository.ProductoRepositoriesFolder.ProductoRepository;
+import com.example.InventarioApi.ServiceImpl.ProductoServiceImplFolder.ProductoServiceImpl;
+
+import java.util.Optional;
+
+public class ProductServiceImplTest {
+    
+    @Mock
+    private ProductoRepository productoRepositorio;
+
+    @Mock
+    private MarcaRepository marcaRepositorio;
+
+    @Mock
+    private CategoriaProductoRepository categoriaProductoRepositorio;
+
+    @InjectMocks
+    private ProductoServiceImpl productoServicio;
+
+    private Marca marca;
+    private CategoriaProducto categoria;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        marca = new Marca();
+        marca.setId_marca(1);
+        marca.setNombre_marca("Acme");
+        categoria = new CategoriaProducto();
+        categoria.setId_categoria_producto(2);
+        categoria.setNombre_categoria_producto("Capilares");
+
+        when(marcaRepositorio.findById(1)).thenReturn(Optional.of(marca));
+        when(categoriaProductoRepositorio.findById(2)).thenReturn(Optional.of(categoria));
+    }
+
+    @Test
+    void testCrearProducto() {
+        // Arrange: DTO de entrada
+        CreateProductoDTO createDTO = CreateProductoDTO.builder()
+                .nombre_producto("Shampoo")
+                .descripcion("Shampoo revitalizante")
+                .precio(5000)
+                .stock(10)
+                .id_marca(1)
+                .id_categoria(2)
+                .build();
+
+        // Simular la entidad que guardará el repositorio
+        Producto productoGuardado = new Producto();
+        productoGuardado.setId_producto(1);
+        productoGuardado.setNombre_producto("Shampoo");
+        productoGuardado.setDescripcion("Shampoo revitalizante");
+        productoGuardado.setPrecio(5000);
+        productoGuardado.setStock(10);
+        productoGuardado.setMarca(marca);
+        productoGuardado.setCategoria(categoria);
+
+        // Mock del repositorio
+        when(productoRepositorio.save(any(Producto.class))).thenReturn(productoGuardado);
+
+        // Act: ejecutar el servicio
+        ProductoDTO resultado = productoServicio.crearProducto(createDTO);
+
+        // Assert: verificar resultados
+        assertNotNull(resultado);
+        assertEquals(1, resultado.getId_producto());
+        assertEquals("Shampoo", resultado.getNombre_producto());
+        assertEquals("Shampoo revitalizante", resultado.getDescripcion());
+        assertEquals(5000, resultado.getPrecio());
+        assertEquals(10, resultado.getStock());
+    }
+}

@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: com.natycejas.GestionUsuariosApi.ServiceImpl.UsuarioServiceImplTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.267 s <<< FAILURE! -- in com.natycejas.GestionUsuariosApi.ServiceImpl.UsuarioServiceImplTest
+com.natycejas.GestionUsuariosApi.ServiceImpl.UsuarioServiceImplTest.crearUsuario_deberiaGuardarYRetornarDTO -- Time elapsed: 0.253 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "org.springframework.security.crypto.password.PasswordEncoder.encode(java.lang.CharSequence)" because "this.passwordEncoder" is null
+	at com.natycejas.GestionUsuariosApi.ServiceImpl.UsuarioServiceImpl.crearUsuario(UsuarioServiceImpl.java:50)
+	at com.natycejas.GestionUsuariosApi.ServiceImpl.UsuarioServiceImplTest.crearUsuario_deberiaGuardarYRetornarDTO(UsuarioServiceImplTest.java:114)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
