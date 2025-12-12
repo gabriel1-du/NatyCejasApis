@@ -9,4 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PedidoUpdateDTO {
     private String estado;
+    private Integer idBoleta;
 }

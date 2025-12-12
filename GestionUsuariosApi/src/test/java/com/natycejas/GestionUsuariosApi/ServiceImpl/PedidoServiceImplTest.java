@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.natycejas.GestionUsuariosApi.DTOFolder.PedidoDtosFolder.PedidoCreateDTO;
 import com.natycejas.GestionUsuariosApi.DTOFolder.PedidoDtosFolder.PedidoDTO;
+import com.natycejas.GestionUsuariosApi.DTOFolder.PedidoDtosFolder.PedidoUpdateDTO;
 import com.natycejas.GestionUsuariosApi.MapperFolder.PedidoMapper;
 import com.natycejas.GestionUsuariosApi.ModelFolder.Carrito;
 import com.natycejas.GestionUsuariosApi.ModelFolder.Pedido;
@@ -69,5 +70,22 @@ class PedidoServiceImplTest {
         verify(pedidoMapper).toEntity(createDTO, carrito);
         verify(pedidoRepository).save(pedidoEntity);
         verify(pedidoMapper).toDTO(pedidoGuardado);
+    }
+
+    @Test
+    void actualizarPedido_deberiaActualizarYRetornarDTO() {
+        Integer id = 99;
+        PedidoUpdateDTO updateDTO = new PedidoUpdateDTO("ENVIADO", 123);
+        
+        when(pedidoRepository.findById(id)).thenReturn(Optional.of(pedidoGuardado));
+        when(pedidoRepository.save(pedidoGuardado)).thenReturn(pedidoGuardado);
+        when(pedidoMapper.toDTO(pedidoGuardado)).thenReturn(pedidoDTO);
+        
+        PedidoDTO result = pedidoService.actualizarPedido(id, updateDTO);
+        
+        assertNotNull(result);
+        verify(pedidoRepository).findById(id);
+        verify(pedidoMapper).updateEntityFromDTO(updateDTO, pedidoGuardado);
+        verify(pedidoRepository).save(pedidoGuardado);
     }
 }

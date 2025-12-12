@@ -51,5 +51,8 @@ public class PedidoMapper {
         if (pedidoUpdateDTO.getEstado() != null) {
             pedido.setEstado(pedidoUpdateDTO.getEstado());
         }
+        if (pedidoUpdateDTO.getIdBoleta() != null) {
+            pedido.setIdBoleta(pedidoUpdateDTO.getIdBoleta());
+        }
     }
 }
